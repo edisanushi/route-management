@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitignore" />
+  </Folder>
+  <Project Path="RouteManagement.API/RouteManagement.API.csproj" />
+  <Project Path="RouteManagement.Application/RouteManagement.Application.csproj" Id="f4939643-dddf-4b19-8569-f00d28c626a4" />
+  <Project Path="RouteManagement.Domain/RouteManagement.Domain.csproj" Id="d6280f04-18fa-4b9c-9506-2126ad5d6caf" />
+  <Project Path="RouteManagement.Infrastructure/RouteManagement.Infrastructure.csproj" Id="897841eb-927d-4a60-9214-e39d8179dd19" />
+</Solution>
