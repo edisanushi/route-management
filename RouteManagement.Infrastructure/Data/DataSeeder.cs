@@ -1,14 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using RouteManagement.Domain.Common;
 using RouteManagement.Domain.Entities;
 
 namespace RouteManagement.Infrastructure.Data
 {
     public static class DataSeeder
     {
-        public const string RoleAdmin = "Admin";
-        public const string RoleTourOperatorMember = "TourOperatorMember";
+        public const string RoleAdmin = Roles.Admin;
+        public const string RoleTourOperatorMember = Roles.TourOperatorMember;
 
         public static async Task SeedAsync(
             ApplicationDbContext context,
