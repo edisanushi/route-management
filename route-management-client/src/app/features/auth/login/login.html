@@ -1,0 +1,91 @@
+<div class="auth-wrapper">
+
+  <div class="sky-bg">
+    <div class="stars"></div>
+    <div class="route-line"></div>
+  </div>
+
+  <div class="auth-card">
+
+    <div class="card-header">
+      <div class="logo">
+        <mat-icon class="logo-icon">flight</mat-icon>
+        <span class="logo-text">RouteManagement</span>
+      </div>
+      <h1 class="card-title">Welcome Back</h1>
+      <p class="card-subtitle">Sign in to manage your routes and fares</p>
+    </div>
+
+    <form class="auth-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+      <div class="alert alert-error" *ngIf="error$ | async as error">
+        <mat-icon class="alert-icon">warning</mat-icon>
+        <span>{{ error }}</span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="email">Email Address</label>
+        <div class="input-wrapper">
+          <mat-icon class="input-icon">mail_outline</mat-icon>
+          <input
+            id="email"
+            type="email"
+            class="form-input"
+            [class.input-error]="email?.invalid && email?.touched"
+            formControlName="email"
+            placeholder="you@airline.com"
+            autocomplete="email"
+          />
+        </div>
+        <span class="field-error" *ngIf="email?.invalid && email?.touched">
+          Please enter a valid email address.
+        </span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="password">Password</label>
+        <div class="input-wrapper">
+          <mat-icon class="input-icon">lock_outline</mat-icon>
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            class="form-input"
+            [class.input-error]="password?.invalid && password?.touched"
+            formControlName="password"
+            placeholder="••••••••"
+            autocomplete="current-password"
+          />
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="togglePassword()">
+            <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+        </div>
+        <span class="field-error" *ngIf="password?.invalid && password?.touched">
+          Password must be at least 8 characters.
+        </span>
+      </div>
+
+      <button
+        type="submit"
+        class="btn-submit"
+        [disabled]="isLoading$ | async">
+        <span *ngIf="!(isLoading$ | async)" class="btn-content">
+          <mat-icon>login</mat-icon>
+          Sign In
+        </span>
+        <span *ngIf="isLoading$ | async" class="loading-text">
+          <span class="spinner"></span>
+          Signing in...
+        </span>
+      </button>
+
+    </form>
+
+    <div class="card-footer">
+      <p>Route Fare Management Platform &copy; 2026</p>
+    </div>
+
+  </div>
+</div>

@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AuthActions } from './store/auth/auth.actions';
 
 @Component({
   selector: 'app-root',
@@ -6,6 +8,13 @@ import { Component } from '@angular/core';
   standalone: false,
   styleUrl: './app.scss'
 })
-export class App {
+export class App implements OnInit{
+  
   title = 'Route Fare Management Platform';
+
+  constructor(private store: Store) {}
+
+  ngOnInit(): void {
+    this.store.dispatch(AuthActions.restoreSession());
+  }
 }
