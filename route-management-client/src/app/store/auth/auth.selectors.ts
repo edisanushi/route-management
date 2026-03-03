@@ -1,5 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { AuthState } from '../../core/models/auth.models';
+import { Roles } from '../../core/constants/roles';
 
 export const selectAuthState = createFeatureSelector<AuthState>('auth');
 
@@ -26,10 +27,10 @@ export const selectUserRole = createSelector(
 
 export const selectIsAdmin = createSelector(
   selectUser,
-  user => user?.role === 'Admin'
+  user => user?.role === Roles.Admin
 );
 
 export const selectIsTourOperator = createSelector(
   selectUser,
-  user => user?.role === 'TourOperatorMember'
+  user => user?.role === Roles.TourOperatorMember
 );

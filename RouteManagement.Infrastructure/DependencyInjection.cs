@@ -60,12 +60,10 @@ namespace RouteManagement.Infrastructure
 
         private static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
-            var jwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>()
+            var jwtSettings = configuration.GetSection(JwtSettings.SectionName).Get<JwtSettings>()
                 ?? throw new InvalidOperationException("JwtSettings configuration not found.");
 
-            services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
-
-            //services.AddScoped<IJwtService, JwtService>();
+            services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
 
             services.AddAuthentication(options =>
             {

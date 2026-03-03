@@ -9,16 +9,13 @@ namespace RouteManagement.Infrastructure.Services
     public class IdentityService : IIdentityService
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IJwtService _jwtService;
 
         public IdentityService(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
             IJwtService jwtService)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
             _jwtService = jwtService;
         }
 
@@ -48,7 +45,7 @@ namespace RouteManagement.Infrastructure.Services
         }
 
 
-        public async Task<(bool Success, string Email)> RegisterAsync(RegisterRequest request, string createdBy, CancellationToken cancellationToken = default)
+        public async Task<RegisterResponse> RegisterAsync(RegisterRequest request, string createdBy, CancellationToken cancellationToken = default)
         {
             var existingUser = await _userManager.FindByEmailAsync(request.Email);
             if (existingUser is not null)
@@ -65,12 +62,15 @@ namespace RouteManagement.Infrastructure.Services
 
             var result = await _userManager.CreateAsync(user, request.Password);
             if (!result.Succeeded)
-                throw new InvalidOperationException(
-                    $"Registration failed: {string.Join(", ", result.Errors.Select(e => e.Description)).ToList()}");
+                throw new InvalidOperationException($"Registration failed: {string.Join(", ", result.Errors.Select(e => e.Description))}");
 
             await _userManager.AddToRoleAsync(user, Roles.TourOperatorMember);
 
-            return (true, user.Email);
+            return new RegisterResponse
+            {
+                Email = user.Email!,
+                Role = Roles.TourOperatorMember
+            };
         }
     }
 }

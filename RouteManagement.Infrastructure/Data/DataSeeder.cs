@@ -25,11 +25,14 @@ namespace RouteManagement.Infrastructure.Data
 
         private static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager, CancellationToken cancellationToken)
         {
-            if (await roleManager.RoleExistsAsync(RoleAdmin))
-                return;
-
-            await roleManager.CreateAsync(new IdentityRole(RoleAdmin));
-            await roleManager.CreateAsync(new IdentityRole(RoleTourOperatorMember));
+            if (!await roleManager.RoleExistsAsync(RoleAdmin))
+            {
+                await roleManager.CreateAsync(new IdentityRole(RoleAdmin));
+            }
+            if (!await roleManager.RoleExistsAsync(RoleTourOperatorMember))
+            {
+                await roleManager.CreateAsync(new IdentityRole(RoleTourOperatorMember));
+            }
         }
 
         private static async Task SeedAdminUserAsync(

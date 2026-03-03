@@ -42,3 +42,7 @@ packages/
 # Rider
 .idea/
 *.sln.iml
+
+# Logs
+logs/
+*.txt

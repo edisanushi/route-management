@@ -10,6 +10,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
+import { ReactiveFormsModule } from '@angular/forms';
 
 const materialModules = [
   MatButtonModule,
@@ -27,11 +28,13 @@ const materialModules = [
   imports: [
     CommonModule,
     RouterModule,
+    ReactiveFormsModule,
     ...materialModules
   ],
   exports: [
     CommonModule,
     RouterModule,
+    ReactiveFormsModule,
     ...materialModules
   ]
 })

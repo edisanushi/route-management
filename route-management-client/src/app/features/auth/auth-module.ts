@@ -1,10 +1,8 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
 import { AuthRoutingModule } from './auth-routing-module';
 import { Login } from './login/login';
 import { Register } from './register/register';
+import { SharedModule } from '../../shared/shared-module';
 
 @NgModule({
   declarations: [
@@ -12,10 +10,8 @@ import { Register } from './register/register';
     Register
   ],
   imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    MatIconModule,
-    AuthRoutingModule
-  ]
+  SharedModule,
+  AuthRoutingModule
+]
 })
 export class AuthModule {}

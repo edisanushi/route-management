@@ -45,37 +45,21 @@ namespace RouteManagement.API.Controllers
 
             try
             {
-                var registerResult = await identityService.RegisterAsync(request, createdBy: currentUserService.UserId ?? "", cancellationToken);
+                var registerResult = await identityService.RegisterAsync(
+                    request,
+                    createdBy: currentUserService.UserId ?? string.Empty,
+                    cancellationToken);
 
-                if (registerResult.Success)
-                    return CreatedAtAction(
-                        nameof(Login),
-                        new { },
-                        new { message = $"User {registerResult.Email} registered successfully." });
-                else
-                    return BadRequest("Something went wrong");
+                return CreatedAtAction(
+                    nameof(Login),
+                    new { },
+                    registerResult);
             }
             catch (InvalidOperationException ex)
             {
-                return Conflict(new { message = ex.Message });
+                return BadRequest(new { message = ex.Message });
             }
         }
 
-
-        [HttpGet("me")]
-        [Authorize]
-        public async Task<IActionResult> Me()
-        {
-            var user = await userManager.FindByIdAsync(currentUserService.UserId ?? string.Empty);
-
-            if (user is null || user.IsDeleted)
-                return Unauthorized();
-
-            return Ok(new
-            {
-                user.Email,
-                Role = currentUserService.Role,
-            });
-        }
     }
 }

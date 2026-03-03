@@ -20,15 +20,15 @@ export class RoleGuard implements CanActivate {
   ) {}
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean | UrlTree> {
-    const expectedRoles = route.data['roles'] as string[];
+    const expectedRoles = route.data['roles'] as string[] | undefined;
+    const roles = Array.isArray(expectedRoles) ? expectedRoles : [];
 
     return this.store.select(selectUserRole).pipe(
       take(1),
       map(userRole => {
-        if (userRole && expectedRoles.includes(userRole)) {
+        if (userRole && roles.includes(userRole)) {
           return true;
         }
-
         return this.router.createUrlTree(['/unauthorized']);
       })
     );

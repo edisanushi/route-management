@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { AuthResponse, LoginRequest, RegisterRequest } from '../models/auth.models';
+import { AuthResponse, LoginRequest, RegisterRequest, RegisterResponse } from '../models/auth.models';
+import { Roles } from '../constants/roles';
 
 @Injectable({
   providedIn: 'root'
@@ -21,11 +22,8 @@ export class AuthService {
     );
   }
 
-  register(request: RegisterRequest): Observable<{ message: string }> {
-    return this.http.post<{ message: string }>(
-      `${this.apiUrl}/register`,
-      request
-    );
+  register(request: RegisterRequest): Observable<RegisterResponse> {
+    return this.http.post<RegisterResponse>(`${this.apiUrl}/register`, request);
   }
 
   getToken(): string | null {
@@ -55,11 +53,11 @@ export class AuthService {
   }
 
   isAdmin(): boolean {
-    return this.getStoredUser()?.role === 'Admin';
+    return this.getStoredUser()?.role === Roles.Admin;
   }
 
   isTourOperator(): boolean {
-    return this.getStoredUser()?.role === 'TourOperatorMember';
+    return this.getStoredUser()?.role === Roles.TourOperatorMember;
   }
 
   private persistAuth(response: AuthResponse): void {

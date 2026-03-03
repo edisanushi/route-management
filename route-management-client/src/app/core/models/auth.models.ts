@@ -9,6 +9,11 @@ export interface RegisterRequest {
   confirmPassword: string;
 }
 
+export interface RegisterResponse {
+  email: string;
+  role: string;
+}
+
 export interface AuthResponse {
   token: string;
   email: string;

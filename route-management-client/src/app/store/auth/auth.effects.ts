@@ -5,6 +5,17 @@ import { catchError, exhaustMap, map, of, tap } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
 import { AuthActions } from './auth.actions';
 
+function getExpiresAtFromToken(token: string): string {
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    if (typeof payload.exp === 'number') {
+      return new Date(payload.exp * 1000).toISOString();
+    }
+  } catch {
+  }
+  return '';
+}
+
 export class AuthEffects {
 
   private actions$ = inject(Actions);
@@ -38,9 +49,7 @@ export class AuthEffects {
       ofType(AuthActions.register),
       exhaustMap(({ request }) =>
         this.authService.register(request).pipe(
-          map(response => AuthActions.registerSuccess({
-            message: response.message
-          })),
+          map(response => AuthActions.registerSuccess({ response })),
           catchError(error => of(AuthActions.registerFailure({
             error: error.error?.message ?? 'Registration failed. Please try again.'
           })))
@@ -68,12 +77,13 @@ export class AuthEffects {
         const user  = this.authService.getStoredUser();
 
         if (token && user && this.authService.isAuthenticated()) {
-          return AuthActions.loginSuccess({
+          const expiresAt = getExpiresAtFromToken(token);
+          return AuthActions.restoreSessionSuccess({
             response: {
               token,
               email:     user.email,
               role:      user.role,
-              expiresAt: ''
+              expiresAt
             }
           });
         }
