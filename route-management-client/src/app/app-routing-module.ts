@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
+import { Shell } from './features/layout/shell/shell';
 
 const routes: Routes = [
   {
@@ -10,13 +11,6 @@ const routes: Routes = [
         .then(m => m.AuthModule)
   },
   {
-    path: 'dashboard',
-    canActivate: [AuthGuard],
-    loadChildren: () =>
-      import('./features/dashboard/dashboard-module')
-        .then(m => m.DashboardModule)
-  },
-  {
     path: 'unauthorized',
     loadChildren: () =>
       import('./features/unauthorized/unauthorized-module')
@@ -24,8 +18,21 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'auth/login',
-    pathMatch:  'full'
+    component: Shell,
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: 'dashboard',
+        loadChildren: () =>
+          import('./features/dashboard/dashboard-module')
+            .then(m => m.DashboardModule)
+      },
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full'
+      }
+    ]
   },
   {
     path: '**',
@@ -37,4 +44,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

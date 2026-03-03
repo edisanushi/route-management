@@ -24,32 +24,32 @@
       </div>
 
       <div class="form-group">
-        <label class="form-label" for="email">Email Address</label>
-        <div class="input-wrapper">
-          <mat-icon class="input-icon">mail_outline</mat-icon>
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Email Address</mat-label>
+          <mat-icon matPrefix class="input-icon">mail_outline</mat-icon>
           <input
+            matInput
             id="email"
             type="email"
-            class="form-input"
             [class.input-error]="email?.invalid && email?.touched"
             formControlName="email"
             placeholder="you@airline.com"
             autocomplete="email"
           />
-        </div>
-        <span class="field-error" *ngIf="email?.invalid && email?.touched">
-          Please enter a valid email address.
-        </span>
+          <mat-error *ngIf="email?.invalid && email?.touched">
+            Please enter a valid email address.
+          </mat-error>
+        </mat-form-field>
       </div>
 
       <div class="form-group">
-        <label class="form-label" for="password">Password</label>
-        <div class="input-wrapper">
-          <mat-icon class="input-icon">lock_outline</mat-icon>
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Password</mat-label>
+          <mat-icon matPrefix class="input-icon">lock_outline</mat-icon>
           <input
+            matInput
             id="password"
             [type]="showPassword ? 'text' : 'password'"
-            class="form-input"
             [class.input-error]="password?.invalid && password?.touched"
             formControlName="password"
             placeholder="••••••••"
@@ -57,14 +57,15 @@
           />
           <button
             type="button"
-            class="toggle-password"
+            mat-icon-button
+            matSuffix
             (click)="togglePassword()">
             <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
           </button>
-        </div>
-        <span class="field-error" *ngIf="password?.invalid && password?.touched">
-          Password must be at least 8 characters.
-        </span>
+          <mat-error *ngIf="password?.invalid && password?.touched">
+            Password must be at least 8 characters.
+          </mat-error>
+        </mat-form-field>
       </div>
 
       <button

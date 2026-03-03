@@ -1,20 +1,22 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { MatIconModule } from '@angular/material/icon';
+import { SharedModule } from '../../shared/shared-module';
 import { Navbar } from './navbar/navbar';
+import { Sidebar } from './sidebar/sidebar';
+import { Shell } from './shell/shell';
 
 @NgModule({
   declarations: [
-    Navbar
+    Navbar,
+    Sidebar,
+    Shell
   ],
   imports: [
-    CommonModule,
-    RouterModule,
-    MatIconModule
+    SharedModule
   ],
   exports: [
-    Navbar
+    Navbar,
+    Sidebar,
+    Shell
   ]
 })
 export class LayoutModule {}

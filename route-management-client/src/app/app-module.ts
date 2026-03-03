@@ -7,6 +7,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
 import { CoreModule } from './core/core-module';
+import { LayoutModule } from './features/layout/layout-module';
 import { authReducer } from './store/auth/auth.reducer';
 import { AuthEffects } from './store/auth/auth.effects';
 import { environment } from '../environments/environment';
@@ -19,6 +20,7 @@ import { environment } from '../environments/environment';
     BrowserModule,
     AppRoutingModule,
     CoreModule,
+    LayoutModule,
     StoreModule.forRoot({
       auth: authReducer
     }),

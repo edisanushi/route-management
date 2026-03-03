@@ -1,0 +1,20 @@
+$sky-dark: #0a1628;
+
+.shell-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: $sky-dark;
+}
+
+.shell-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.shell-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2rem;
+}

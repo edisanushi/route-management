@@ -2,14 +2,8 @@
 
   <div class="sky-bg">
     <div class="stars"></div>
-    <div class="clouds cloud-1"></div>
-    <div class="clouds cloud-2"></div>
-    <div class="clouds cloud-3"></div>
     <div class="route-line"></div>
-    <div class="plane">
-      <mat-icon>flight</mat-icon>
-      </div>
-    </div>
+  </div>
 
   <div class="auth-card">
 
@@ -22,96 +16,96 @@
       <p class="card-subtitle">Register a new tour operator account</p>
     </div>
 
-      <div class="alert alert-success" *ngIf="successMessage">
-        <mat-icon class="alert-icon">check_circle</mat-icon>
-        <span>{{ successMessage }}</span>
-      </div>
+    <div class="alert alert-success" *ngIf="successMessage">
+      <mat-icon class="alert-icon">check_circle</mat-icon>
+      <span>{{ successMessage }}</span>
+    </div>
 
     <form class="auth-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
 
-        <div class="alert alert-error" *ngIf="error$ | async as error">
-          <mat-icon class="alert-icon">warning</mat-icon>
-          <span>{{ error }}</span>
-        </div>
+      <div class="alert alert-error" *ngIf="error$ | async as error">
+        <mat-icon class="alert-icon">warning</mat-icon>
+        <span>{{ error }}</span>
+      </div>
 
-        <div class="form-group">
-          <label class="form-label" for="email">Email Address</label>
-          <div class="input-wrapper">
-            <mat-icon class="input-icon">mail_outline</mat-icon>
-            <input
-              id="email"
-              type="email"
-              class="form-input"
-              [class.input-error]="email?.invalid && email?.touched"
-              formControlName="email"
-              placeholder="operator@airline.com"
+      <div class="form-group">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Email Address</mat-label>
+          <mat-icon matPrefix class="input-icon">mail_outline</mat-icon>
+          <input
+            matInput
+            id="email"
+            type="email"
+            [class.input-error]="email?.invalid && email?.touched"
+            formControlName="email"
+            placeholder="operator@airline.com"
             autocomplete="email"
-            />
-          </div>
-          <span class="field-error" *ngIf="email?.invalid && email?.touched">
+          />
+          <mat-error *ngIf="email?.invalid && email?.touched">
             Please enter a valid email address.
-          </span>
-        </div>
+          </mat-error>
+        </mat-form-field>
+      </div>
 
-        <div class="form-group">
-          <label class="form-label" for="password">Password</label>
-          <div class="input-wrapper">
-            <mat-icon class="input-icon">lock_outline</mat-icon>
-            <input
-              id="password"
-              [type]="showPassword ? 'text' : 'password'"
-              class="form-input"
-              [class.input-error]="password?.invalid && password?.touched"
-              formControlName="password"
-              placeholder="••••••••"
-              autocomplete="new-password"
-            />
-            <button type="button" class="toggle-password" (click)="togglePassword()">
-              <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-            </button>
-          </div>
-          <span class="field-error" *ngIf="password?.invalid && password?.touched">
-            Password must be at least 8 characters.
-          </span>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="confirmPassword">Confirm Password</label>
-          <div class="input-wrapper">
-            <mat-icon class="input-icon">lock_outline</mat-icon>
-            <input
-              id="confirmPassword"
-              [type]="showConfirmPassword ? 'text' : 'password'"
-              class="form-input"
-              [class.input-error]="passwordMismatch"
-              formControlName="confirmPassword"
-              placeholder="••••••••"
-              autocomplete="new-password"
-            />
-            <button type="button" class="toggle-password" (click)="toggleConfirmPassword()">
-              <mat-icon>{{ showConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-            </button>
-          </div>
-          <span class="field-error" *ngIf="passwordMismatch">
-            Passwords do not match.
-          </span>
-        </div>
-
-          <button
-            type="submit"
-            class="btn-submit"
-            [disabled]="isLoading$ | async">
-            <span *ngIf="!(isLoading$ | async)" class="btn-content">
-              <mat-icon>person_add</mat-icon>
-              Create Account
-            </span>
-            <span *ngIf="isLoading$ | async" class="loading-text">
-              <span class="spinner"></span>
-              Creating account...
-            </span>
+      <div class="form-group">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Password</mat-label>
+          <mat-icon matPrefix class="input-icon">lock_outline</mat-icon>
+          <input
+            matInput
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            [class.input-error]="password?.invalid && password?.touched"
+            formControlName="password"
+            placeholder="••••••••"
+            autocomplete="new-password"
+          />
+          <button type="button" mat-icon-button matSuffix (click)="togglePassword()">
+            <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
           </button>
+          <mat-error *ngIf="password?.invalid && password?.touched">
+            Password must be at least 8 characters.
+          </mat-error>
+        </mat-form-field>
+      </div>
 
-      </form>
+      <div class="form-group">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Confirm Password</mat-label>
+          <mat-icon matPrefix class="input-icon">lock_outline</mat-icon>
+          <input
+            matInput
+            id="confirmPassword"
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            [class.input-error]="passwordMismatch"
+            formControlName="confirmPassword"
+            placeholder="••••••••"
+            autocomplete="new-password"
+          />
+          <button type="button" mat-icon-button matSuffix (click)="toggleConfirmPassword()">
+            <mat-icon>{{ showConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="passwordMismatch">
+            Passwords do not match.
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <button
+        type="submit"
+        class="btn-submit"
+        [disabled]="isLoading$ | async">
+        <span *ngIf="!(isLoading$ | async)" class="btn-content">
+          <mat-icon>person_add</mat-icon>
+          Create Account
+        </span>
+        <span *ngIf="isLoading$ | async" class="loading-text">
+          <span class="spinner"></span>
+          Creating account...
+        </span>
+      </button>
+
+    </form>
 
     <div class="back-link">
       <a routerLink="/dashboard" class="btn-back">
@@ -124,5 +118,5 @@
       <p>Route Fare Management Platform &copy; 2026</p>
     </div>
 
-    </div>
+  </div>
 </div>

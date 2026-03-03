@@ -1,0 +1,31 @@
+<aside class="sidebar">
+
+  <nav class="sidebar-nav">
+
+    <ng-container *ngIf="isAdmin$ | async">
+      <a
+        *ngFor="let item of adminNav"
+        class="nav-item"
+        [routerLink]="item.route"
+        routerLinkActive="nav-item--active"
+        [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }">
+        <mat-icon class="nav-icon">{{ item.icon }}</mat-icon>
+        <span class="nav-label">{{ item.label }}</span>
+      </a>
+    </ng-container>
+
+    <ng-container *ngIf="isTourOperator$ | async">
+      <a
+        *ngFor="let item of operatorNav"
+        class="nav-item"
+        [routerLink]="item.route"
+        routerLinkActive="nav-item--active"
+        [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }">
+        <mat-icon class="nav-icon">{{ item.icon }}</mat-icon>
+        <span class="nav-label">{{ item.label }}</span>
+      </a>
+    </ng-container>
+
+  </nav>
+
+</aside>

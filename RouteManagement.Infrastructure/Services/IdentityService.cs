@@ -20,10 +20,13 @@ namespace RouteManagement.Infrastructure.Services
         }
 
 
-        public async Task<AuthResponse?> LoginAsync(LoginRequest request, CancellationToken cancellationToken = default)
+        public async Task<AuthResponse?> LoginAsync(LoginRequest request, CancellationToken cancellationToken)
         {
             var user = await _userManager.FindByEmailAsync(request.Email);
             if (user == null)
+                throw new UnauthorizedAccessException("Invalid email or password.");
+
+            if (user.IsDeleted)
                 throw new UnauthorizedAccessException("Invalid email or password.");
 
             var passwordValid = await _userManager.CheckPasswordAsync(user, request.Password);
@@ -45,7 +48,7 @@ namespace RouteManagement.Infrastructure.Services
         }
 
 
-        public async Task<RegisterResponse> RegisterAsync(RegisterRequest request, string createdBy, CancellationToken cancellationToken = default)
+        public async Task<RegisterResponse> RegisterAsync(RegisterRequest request, string createdBy, CancellationToken cancellationToken)
         {
             var existingUser = await _userManager.FindByEmailAsync(request.Email);
             if (existingUser is not null)
