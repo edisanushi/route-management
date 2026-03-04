@@ -12,15 +12,15 @@ import { selectUserEmail, selectIsAdmin } from '../../../store/auth/auth.selecto
 })
 export class Navbar implements OnInit {
 
-  userEmail$: Observable<string | null>;
-  isAdmin$:   Observable<boolean>;
+  userEmail$!: Observable<string | null>;
+  isAdmin$!: Observable<boolean>;
 
-  constructor(private store: Store) {
+  constructor(private store: Store) {}
+
+  ngOnInit(): void {
     this.userEmail$ = this.store.select(selectUserEmail);
-    this.isAdmin$   = this.store.select(selectIsAdmin);
+    this.isAdmin$ = this.store.select(selectIsAdmin);
   }
-
-  ngOnInit(): void {}
 
   logout(): void {
     this.store.dispatch(AuthActions.logout());

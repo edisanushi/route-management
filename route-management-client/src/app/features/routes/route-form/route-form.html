@@ -1,0 +1,50 @@
+<div class="page-wrapper">
+  <div class="page-header">
+    <button mat-icon-button (click)="onCancel()" class="btn-back">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1 class="page-title">{{ isEditMode ? 'Edit Route' : 'New Route' }}</h1>
+  </div>
+
+  <div class="form-card">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Origin</mat-label>
+        <input matInput formControlName="origin" placeholder="e.g. London" />
+        <mat-error *ngIf="origin?.invalid && origin?.touched">Origin is required.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Destination</mat-label>
+        <input matInput formControlName="destination" placeholder="e.g. Paris" />
+        <mat-error *ngIf="destination?.invalid && destination?.touched">Destination is required.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Booking Classes</mat-label>
+        <mat-select formControlName="bookingClassIds" multiple>
+          <mat-option
+            *ngFor="let bc of bookingClasses$ | async"
+            [value]="bc.id">
+            {{ bc.name }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="bookingClassIds?.invalid && bookingClassIds?.touched">
+          At least one booking class is required.
+        </mat-error>
+      </mat-form-field>
+
+      <div class="form-actions">
+        <button type="button" mat-stroked-button (click)="onCancel()" class="btn-cancel">
+          Cancel
+        </button>
+        <button type="submit" mat-raised-button class="btn-submit" [disabled]="isLoading$ | async">
+          <mat-icon>{{ isEditMode ? 'save' : 'add' }}</mat-icon>
+          {{ isEditMode ? 'Save Changes' : 'Create Route' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

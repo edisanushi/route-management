@@ -32,14 +32,17 @@ const OPERATOR_NAV: NavItem[] = [
 })
 export class Sidebar {
 
-  isAdmin$: Observable<boolean>;
-  isTourOperator$: Observable<boolean>;
+  isAdmin$!: Observable<boolean>;
+  isTourOperator$!: Observable<boolean>;
 
   adminNav = ADMIN_NAV;
   operatorNav = OPERATOR_NAV;
 
-  constructor(private store: Store) {
+  constructor(private store: Store) {}
+
+  ngOnInit(): void {
     this.isAdmin$ = this.store.select(selectIsAdmin);
     this.isTourOperator$ = this.store.select(selectIsTourOperator);
   }
+  
 }

@@ -5,9 +5,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using RouteManagement.Application.Interfaces;
+using RouteManagement.Application.Services;
 using RouteManagement.Application.Settings;
 using RouteManagement.Domain.Entities;
 using RouteManagement.Infrastructure.Data;
+using RouteManagement.Infrastructure.Repositories;
 using RouteManagement.Infrastructure.Services;
 using System.Text;
 
@@ -19,23 +21,19 @@ namespace RouteManagement.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDatabase(configuration);
-
             services.AddIdentityConfiguration();
-
             services.AddJwtAuthentication(configuration);
-
             services.AddApplicationServices();
-
             return services;
         }
 
         private static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection")
-                ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+              ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString));
+              options.UseSqlServer(connectionString));
 
             return services;
         }
@@ -53,7 +51,7 @@ namespace RouteManagement.Infrastructure
                 options.User.RequireUniqueEmail = true;
             })
             .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
-
+            
             return services;
         }
 
@@ -61,10 +59,10 @@ namespace RouteManagement.Infrastructure
         private static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             var jwtSettings = configuration.GetSection(JwtSettings.SectionName).Get<JwtSettings>()
-                ?? throw new InvalidOperationException("JwtSettings configuration not found.");
-
+              ?? throw new InvalidOperationException("JwtSettings configuration not found.");
+            
             services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
-
+            
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -96,7 +94,9 @@ namespace RouteManagement.Infrastructure
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddHttpContextAccessor();
-
+            services.AddScoped<IBookingClassRepository, BookingClassRepository>();
+            services.AddScoped<IRouteRepository, RouteRepository>();
+            services.AddScoped<IRouteService, RouteService>();
             return services;
         }
     }

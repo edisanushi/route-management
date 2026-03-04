@@ -1,0 +1,49 @@
+<div class="page-wrapper">
+  <div class="page-header">
+    <h1 class="page-title">Routes</h1>
+    <button
+      *ngIf="isAdmin$ | async"
+      mat-raised-button
+      class="btn-add"
+      routerLink="/routes/new">
+      <mat-icon>add</mat-icon>
+      New Route
+    </button>
+  </div>
+
+  <div *ngIf="isLoading$ | async" class="loading-wrapper">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <ng-container *ngIf="!(isLoading$ | async)">
+    <ng-container *ngIf="bookingClasses$ | async as bookingClasses">
+      <div *ngIf="(routes$ | async)?.length === 0" class="empty-state">
+        <mat-icon class="empty-icon">alt_route</mat-icon>
+        <p>No routes found.</p>
+      </div>
+
+      <div class="routes-grid" *ngIf="(routes$ | async)?.length! > 0">
+        <div class="route-card" *ngFor="let route of routes$ | async">
+          <div class="route-path">
+            <span class="route-city">{{ route.origin }}</span>
+            <mat-icon class="route-arrow">arrow_forward</mat-icon>
+            <span class="route-city">{{ route.destination }}</span>
+          </div>
+          <div class="route-classes">
+            <span class="class-badge" *ngFor="let id of route.bookingClassIds">
+              {{ bookingClasses | bookingClassName: id }}
+            </span>
+          </div>
+          <div class="route-actions" *ngIf="isAdmin$ | async">
+            <button mat-icon-button [routerLink]="['/routes', route.id, 'edit']" class="btn-edit">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button (click)="onDelete(route.id)" class="btn-delete">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+</div>

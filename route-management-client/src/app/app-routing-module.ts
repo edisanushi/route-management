@@ -28,6 +28,12 @@ const routes: Routes = [
             .then(m => m.DashboardModule)
       },
       {
+        path: 'routes',
+        loadChildren: () =>
+          import('./features/routes/routes-module')
+            .then(m => m.RoutesModule)
+      },
+      {
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full'
@@ -44,4 +50,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

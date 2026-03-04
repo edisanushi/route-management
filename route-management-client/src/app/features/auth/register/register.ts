@@ -18,8 +18,8 @@ import { Actions, ofType } from '@ngrx/effects';
 export class Register implements OnInit, OnDestroy {
 
   registerForm!: FormGroup;
-  isLoading$: Observable<boolean>;
-  error$: Observable<string | null>;
+  isLoading$!: Observable<boolean>;
+  error$!: Observable<string | null>;
   showPassword = false;
   showConfirmPassword = false;
   successMessage: string | null = null;
@@ -30,12 +30,12 @@ export class Register implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private store: Store,
     private actions$: Actions
-  ) {
-    this.isLoading$ = this.store.select(selectIsLoading);
-    this.error$ = this.store.select(selectError);
-  }
+  ) {}
 
   ngOnInit(): void {
+    this.isLoading$ = this.store.select(selectIsLoading);
+    this.error$ = this.store.select(selectError);
+    
     this.registerForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],

@@ -1,0 +1,128 @@
+$gold: #f4c542;
+$white: #ffffff;
+$white-dim: rgba(255, 255, 255, 0.7);
+$sky-mid: #0d2347;
+$sky-light: #1a3a6b;
+$error: #ff6b6b;
+
+.page-wrapper {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.page-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: $white;
+  margin: 0;
+}
+
+.btn-add {
+  background: $gold;
+  color: #0a1628;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.loading-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 4rem 0;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4rem 0;
+  color: $white-dim;
+
+  .empty-icon {
+    font-size: 3rem !important;
+    width: 3rem !important;
+    height: 3rem !important;
+    margin-bottom: 1rem;
+    opacity: 0.4;
+  }
+
+  p { margin: 0; font-size: 1rem; }
+}
+
+.routes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.route-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: border-color 0.2s, background 0.2s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+}
+
+.route-path {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.route-city {
+  font-size: 1rem;
+  font-weight: 600;
+  color: $white;
+}
+
+.route-arrow {
+  color: $gold;
+  font-size: 1.1rem !important;
+  width: 1.1rem !important;
+  height: 1.1rem !important;
+}
+
+.route-classes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.class-badge {
+  padding: 0.2rem 0.6rem;
+  background: rgba($gold, 0.12);
+  border: 1px solid rgba($gold, 0.25);
+  border-radius: 20px;
+  font-size: 0.75rem;
+  color: $gold;
+  font-weight: 500;
+}
+
+.route-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+}
+
+.btn-edit mat-icon { color: $white-dim; }
+.btn-delete mat-icon { color: rgba($error, 0.7); }
+
+.btn-edit:hover mat-icon { color: $white; }
+.btn-delete:hover mat-icon { color: $error; }

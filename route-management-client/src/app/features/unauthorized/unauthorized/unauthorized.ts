@@ -12,12 +12,14 @@ import { Observable } from 'rxjs';
 })
 export class Unauthorized {
 
-  isAuthenticated$: Observable<boolean>;
+  isAuthenticated$!: Observable<boolean>;
 
   constructor(
     private router: Router,
     private store: Store
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.isAuthenticated$ = this.store.select(selectIsAuthenticated);
   }
 

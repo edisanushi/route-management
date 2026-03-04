@@ -1,0 +1,32 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
+import { RouteDto, RouteFormDto } from '../models/route.models';
+
+@Injectable({ providedIn: 'root' })
+export class RouteService {
+  private readonly apiUrl = `${environment.apiUrl}/routes`;
+
+  constructor(private http: HttpClient) {}
+
+  getAll(): Observable<RouteDto[]> {
+    return this.http.get<RouteDto[]>(this.apiUrl);
+  }
+
+  getById(id: number): Observable<RouteDto> {
+    return this.http.get<RouteDto>(`${this.apiUrl}/${id}`);
+  }
+
+  create(dto: RouteFormDto): Observable<RouteDto> {
+    return this.http.post<RouteDto>(this.apiUrl, dto);
+  }
+
+  update(id: number, dto: RouteFormDto): Observable<RouteDto> {
+    return this.http.put<RouteDto>(`${this.apiUrl}/${id}`, dto);
+  }
+
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+}

@@ -6,31 +6,31 @@ import { AuthActions } from '../../../store/auth/auth.actions';
 import { selectIsLoading, selectError } from '../../../store/auth/auth.selectors';
 
 @Component({
-  selector:    'app-login',
+  selector: 'app-login',
   templateUrl: './login.html',
-  styleUrls:   ['./login.scss'],
-  standalone:  false
+  styleUrls: ['./login.scss'],
+  standalone: false
 })
 export class Login implements OnInit, OnDestroy {
 
-  loginForm!:  FormGroup;
-  isLoading$:  Observable<boolean>;
-  error$:      Observable<string | null>;
+  loginForm!: FormGroup;
+  isLoading$!: Observable<boolean>;
+  error$!: Observable<string | null>;
   showPassword = false;
 
   private destroy$ = new Subject<void>();
 
   constructor(
-    private fb:    FormBuilder,
+    private fb: FormBuilder,
     private store: Store
-  ) {
-    this.isLoading$ = this.store.select(selectIsLoading);
-    this.error$     = this.store.select(selectError);
-  }
+  ) {}
 
   ngOnInit(): void {
+    this.isLoading$ = this.store.select(selectIsLoading);
+    this.error$ = this.store.select(selectError);
+    
     this.loginForm = this.fb.group({
-      email:    ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]]
     });
   }
@@ -40,7 +40,7 @@ export class Login implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  get email()    { return this.loginForm.get('email');    }
+  get email() { return this.loginForm.get('email'); }
   get password() { return this.loginForm.get('password'); }
 
   togglePassword(): void {
@@ -55,7 +55,7 @@ export class Login implements OnInit, OnDestroy {
 
     this.store.dispatch(AuthActions.login({
       request: {
-        email:    this.loginForm.value.email,
+        email: this.loginForm.value.email,
         password: this.loginForm.value.password
       }
     }));
