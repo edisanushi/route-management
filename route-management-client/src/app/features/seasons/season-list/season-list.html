@@ -1,0 +1,42 @@
+<div class="page-wrapper">
+  <div class="page-header">
+    <h1 class="page-title">Seasons</h1>
+    <button *ngIf="isAdmin$ | async" mat-raised-button class="btn-add" routerLink="/seasons/new">
+      <mat-icon>add</mat-icon>
+      New Season
+    </button>
+  </div>
+
+  <div *ngIf="isLoading$ | async" class="loading-wrapper">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <ng-container *ngIf="!(isLoading$ | async)">
+    <div *ngIf="(seasons$ | async)?.length === 0" class="empty-state">
+      <mat-icon class="empty-icon">event</mat-icon>
+      <p>No seasons found.</p>
+    </div>
+
+    <div class="seasons-grid" *ngIf="(seasons$ | async)?.length! > 0">
+      <div class="season-card" *ngFor="let season of seasons$ | async">
+        <div class="season-header">
+          <span class="season-badge" [class.winter]="season.seasonType === 1" [class.summer]="season.seasonType === 2">
+            <mat-icon>{{ season.seasonType === 1 ? 'ac_unit' : 'wb_sunny' }}</mat-icon>
+            {{ season.seasonTypeName }}
+          </span>
+          <span class="season-year">{{ season.year }}</span>
+        </div>
+        <div class="season-dates">
+          <span>{{ season.startDate | date: 'd MMM yyyy' }}</span>
+          <mat-icon class="date-arrow">arrow_forward</mat-icon>
+          <span>{{ season.endDate | date: 'd MMM yyyy' }}</span>
+        </div>
+        <div class="season-actions" *ngIf="isAdmin$ | async">
+          <button mat-icon-button [routerLink]="['/seasons', season.id, 'edit']" class="btn-edit">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

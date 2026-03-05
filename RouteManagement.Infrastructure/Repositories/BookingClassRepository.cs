@@ -5,25 +5,19 @@ using RouteManagement.Infrastructure.Data;
 
 namespace RouteManagement.Infrastructure.Repositories
 {
-    public class BookingClassRepository : IBookingClassRepository
+    public class BookingClassRepository(ApplicationDbContext context) : IBookingClassRepository
     {
-        private readonly ApplicationDbContext _context;
-
-        public BookingClassRepository(ApplicationDbContext context)
-        {
-            _context = context;
-        }
 
         public async Task<IReadOnlyList<BookingClass>> GetAllAsync(CancellationToken cancellationToken)
         {
-            return await _context.BookingClasses.OrderBy(bc => bc.Name)
-                .ToListAsync(cancellationToken);
+            return await context.BookingClasses.OrderBy(bc => bc.Name)
+                                               .ToListAsync(cancellationToken);
         }
 
         public async Task<IReadOnlyList<BookingClass>> GetByIdsAsync(List<int> ids, CancellationToken cancellationToken)
         {
-            return await _context.BookingClasses.Where(bc => ids.Contains(bc.Id))
-                .ToListAsync(cancellationToken);
+            return await context.BookingClasses.Where(bc => ids.Contains(bc.Id))
+                                               .ToListAsync(cancellationToken);
         }
         
     }

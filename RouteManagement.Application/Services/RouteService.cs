@@ -3,26 +3,17 @@ using RouteManagement.Application.Interfaces;
 
 namespace RouteManagement.Application.Services
 {
-    public class RouteService : IRouteService
+    public class RouteService(IRouteRepository routeRepository, IBookingClassRepository bookingClassRepository) : IRouteService
     {
-        private readonly IRouteRepository _routeRepository;
-        private readonly IBookingClassRepository _bookingClassRepository;
-
-        public RouteService(IRouteRepository routeRepository, IBookingClassRepository bookingClassRepository)
-        {
-            _routeRepository = routeRepository;
-            _bookingClassRepository = bookingClassRepository;
-        }
-
         public async Task<IReadOnlyList<RouteDto>> GetAllAsync(CancellationToken cancellationToken)
         {
-            var routes = await _routeRepository.GetAllAsync(cancellationToken);
+            var routes = await routeRepository.GetAllAsync(cancellationToken);
             return routes.Select(MapToDto).ToList();
         }
 
         public async Task<RouteDto> GetByIdAsync(int id, CancellationToken cancellationToken)
         {
-            var route = await _routeRepository.GetByIdAsync(id, cancellationToken)
+            var route = await routeRepository.GetByIdAsync(id, cancellationToken)
                         ?? throw new KeyNotFoundException($"Route with id {id} was not found.");
 
             return MapToDto(route);
@@ -30,10 +21,10 @@ namespace RouteManagement.Application.Services
 
         public async Task<RouteDto> CreateAsync(RouteFormDto dto, string createdBy, CancellationToken cancellationToken)
         {
-            if (await _routeRepository.ExistsAsync(dto.Origin, dto.Destination, cancellationToken))
+            if (await routeRepository.ExistsAsync(dto.Origin, dto.Destination, cancellationToken))
                 throw new InvalidOperationException($"A route from {dto.Origin} to {dto.Destination} already exists.");
 
-            var bookingClasses = await _bookingClassRepository.GetByIdsAsync(dto.BookingClassIds, cancellationToken);
+            var bookingClasses = await bookingClassRepository.GetByIdsAsync(dto.BookingClassIds, cancellationToken);
             if (bookingClasses.Count != dto.BookingClassIds.Count)
                 throw new ArgumentException("One or more booking class IDs are invalid.");
 
@@ -51,19 +42,19 @@ namespace RouteManagement.Application.Services
                 }).ToList()
             };
 
-            var created = await _routeRepository.CreateAsync(route, cancellationToken);
+            var created = await routeRepository.CreateAsync(route, cancellationToken);
             return MapToDto(created);
         }
 
         public async Task<RouteDto> UpdateAsync(int id, RouteFormDto dto, string updatedBy, CancellationToken cancellationToken)
         {
-            var route = await _routeRepository.GetByIdForUpdateAsync(id, cancellationToken)
+            var route = await routeRepository.GetByIdForUpdateAsync(id, cancellationToken)
                         ?? throw new KeyNotFoundException($"Route with id {id} was not found.");
 
-            if (await _routeRepository.ExistsAsync(dto.Origin, dto.Destination, id, cancellationToken))
+            if (await routeRepository.ExistsAsync(dto.Origin, dto.Destination, id, cancellationToken))
                 throw new InvalidOperationException($"A route from {dto.Origin} to {dto.Destination} already exists.");
 
-            var bookingClasses = await _bookingClassRepository.GetByIdsAsync(dto.BookingClassIds, cancellationToken);
+            var bookingClasses = await bookingClassRepository.GetByIdsAsync(dto.BookingClassIds, cancellationToken);
             if (bookingClasses.Count != dto.BookingClassIds.Count)
                 throw new ArgumentException("One or more booking class IDs are invalid.");
 
@@ -102,13 +93,13 @@ namespace RouteManagement.Application.Services
                 });
             }
 
-            await _routeRepository.UpdateAsync(route, cancellationToken);
+            await routeRepository.UpdateAsync(route, cancellationToken);
             return MapToDto(route);
         }
 
         public async Task DeleteAsync(int id, string deletedBy, CancellationToken cancellationToken)
         {
-            var route = await _routeRepository.GetByIdAsync(id, cancellationToken)
+            var route = await routeRepository.GetByIdAsync(id, cancellationToken)
               ?? throw new KeyNotFoundException($"Route with id {id} was not found.");
 
             route.IsDeleted = true;
@@ -116,7 +107,7 @@ namespace RouteManagement.Application.Services
             route.UpdatedOn = DateTime.Now;
             route.UpdatedBy = deletedBy;
 
-            await _routeRepository.UpdateAsync(route, cancellationToken);
+            await routeRepository.UpdateAsync(route, cancellationToken);
         }
 
         private static RouteDto MapToDto(Domain.Entities.Route route)

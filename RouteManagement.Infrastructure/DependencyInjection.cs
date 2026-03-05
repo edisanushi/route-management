@@ -97,6 +97,9 @@ namespace RouteManagement.Infrastructure
             services.AddScoped<IBookingClassRepository, BookingClassRepository>();
             services.AddScoped<IRouteRepository, RouteRepository>();
             services.AddScoped<IRouteService, RouteService>();
+            services.AddScoped<ISeasonService, SeasonService>();
+            services.AddScoped<ISeasonRepository, SeasonRepository>();
+
             return services;
         }
     }

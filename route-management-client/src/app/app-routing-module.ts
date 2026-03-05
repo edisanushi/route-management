@@ -34,6 +34,12 @@ const routes: Routes = [
             .then(m => m.RoutesModule)
       },
       {
+        path: 'seasons',
+        loadChildren: () =>
+          import('./features/seasons/seasons-module')
+            .then(m => m.SeasonsModule)
+      },
+      {
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full'

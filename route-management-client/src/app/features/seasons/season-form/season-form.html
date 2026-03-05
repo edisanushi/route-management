@@ -1,0 +1,58 @@
+<div class="page-wrapper">
+  <div class="page-header">
+    <button mat-icon-button (click)="onCancel()" class="btn-back">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1 class="page-title">New Season</h1>
+  </div>
+
+  <div class="form-card">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Year</mat-label>
+        <input matInput type="number" formControlName="year" />
+        <mat-error *ngIf="year?.invalid && year?.touched">Year must be between 2000 and 2100.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Season Type</mat-label>
+        <mat-select formControlName="seasonType">
+          <mat-option *ngFor="let type of seasonTypes" [value]="type.value">{{ type.label }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="seasonType?.invalid && seasonType?.touched">Season type is required.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Start Date</mat-label>
+        <input matInput [matDatepicker]="startPicker" formControlName="startDate" readonly
+          (dateChange)="onStartDateChange($event.value)" />
+        <mat-datepicker-toggle matIconSuffix [for]="startPicker"></mat-datepicker-toggle>
+        <mat-datepicker #startPicker></mat-datepicker>
+        <mat-error *ngIf="startDate?.invalid && startDate?.touched">Start date is required.</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>End Date</mat-label>
+        <input matInput [matDatepicker]="endPicker" formControlName="endDate" readonly
+          (dateChange)="onEndDateChange($event.value)" />
+        <mat-datepicker-toggle matIconSuffix [for]="endPicker"></mat-datepicker-toggle>
+        <mat-datepicker #endPicker></mat-datepicker>
+        <mat-error *ngIf="endDate?.invalid && endDate?.touched">End date is required.</mat-error>
+      </mat-form-field>
+
+      <mat-error *ngIf="form.hasError('differentYears') && (startDate?.touched || endDate?.touched)" class="form-error">
+        Start and end dates must be in the same year.
+      </mat-error>
+
+      <div class="form-actions">
+        <button type="button" mat-stroked-button (click)="onCancel()" class="btn-cancel">Cancel</button>
+        <button type="submit" mat-raised-button class="btn-submit" [disabled]="isLoading$ | async">
+          <mat-icon>add</mat-icon>
+          Create Season
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

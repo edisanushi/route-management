@@ -1,0 +1,143 @@
+$white: #ffffff;
+$white-dim: rgba(255, 255, 255, 0.7);
+$gold: #f4c542;
+$error: #ff6b6b;
+
+.page-wrapper {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.page-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: $white;
+  margin: 0;
+}
+
+.btn-add {
+  background: $gold;
+  color: #0a1628;
+  font-weight: 600;
+}
+
+.loading-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 4rem 0;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 4rem 0;
+  color: $white-dim;
+
+  .empty-icon {
+    font-size: 3rem !important;
+    width: 3rem !important;
+    height: 3rem !important;
+    margin-bottom: 1rem;
+    opacity: 0.4;
+  }
+
+  p { margin: 0; font-size: 1rem; }
+}
+
+.seasons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.season-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: border-color 0.2s, background 0.2s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: rgba(255, 255, 255, 0.15);
+  }
+}
+
+.season-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.season-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+
+  mat-icon {
+    font-size: 1rem !important;
+    width: 1rem !important;
+    height: 1rem !important;
+  }
+
+  &.winter {
+    background: rgba(100, 180, 255, 0.12);
+    border: 1px solid rgba(100, 180, 255, 0.25);
+    color: #90caf9;
+  }
+
+  &.summer {
+    background: rgba($gold, 0.12);
+    border: 1px solid rgba($gold, 0.25);
+    color: $gold;
+  }
+}
+
+.season-year {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: $white;
+}
+
+.season-dates {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: $white-dim;
+}
+
+.date-arrow {
+  font-size: 1rem !important;
+  width: 1rem !important;
+  height: 1rem !important;
+  color: rgba($white, 0.3);
+}
+
+.season-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-edit mat-icon {
+    color: $white-dim;
+}
+
+.btn-edit:hover mat-icon {
+    color: $white;
+}
