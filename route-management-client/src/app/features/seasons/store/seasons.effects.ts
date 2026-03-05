@@ -67,4 +67,77 @@ export class SeasonsEffects {
     { dispatch: false }
   );
 
+  loadSeason$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(SeasonsActions.loadSeason),
+      exhaustMap(({ id }) =>
+        this.seasonService.getById(id).pipe(
+          map(season => SeasonsActions.loadSeasonSuccess({ season })),
+          catchError(error => of(SeasonsActions.loadSeasonFailure({
+            error: error.error?.message ?? 'Failed to load season.'
+          })))
+        )
+      )
+    )
+  );
+
+  updateSeason$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(SeasonsActions.updateSeason),
+      exhaustMap(({ id, dto }) =>
+        this.seasonService.update(id, dto).pipe(
+          map(season => SeasonsActions.updateSeasonSuccess({ season })),
+          catchError(error => of(SeasonsActions.updateSeasonFailure({
+            error: error.error?.message ?? 'Failed to update season.'
+          })))
+        )
+      )
+    )
+  );
+
+  updateSeasonSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(SeasonsActions.updateSeasonSuccess),
+      tap(() => {
+        this.notification.success('Season updated successfully.');
+        this.router.navigate(['/seasons']);
+      })
+    ),
+    { dispatch: false }
+  );
+
+  deleteSeason$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(SeasonsActions.deleteSeason),
+      exhaustMap(({ id }) =>
+        this.seasonService.delete(id).pipe(
+          map(() => SeasonsActions.deleteSeasonSuccess({ id })),
+          catchError(error => of(SeasonsActions.deleteSeasonFailure({
+            error: error.error?.message ?? 'Failed to delete season.'
+          })))
+        )
+      )
+    )
+  );
+
+  deleteSeasonSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(SeasonsActions.deleteSeasonSuccess),
+      tap(() => this.notification.success('Season deleted successfully.'))
+    ),
+    { dispatch: false }
+  );
+
+  failureEffects$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(
+        SeasonsActions.loadSeasonFailure,
+        SeasonsActions.updateSeasonFailure,
+        SeasonsActions.deleteSeasonFailure
+      ),
+      tap(({ error }) => this.notification.error(error))
+    ),
+    { dispatch: false }
+  );
+
 }

@@ -101,6 +101,7 @@ namespace RouteManagement.Infrastructure.Data
 
             builder.Entity<Season>()
                 .HasIndex(s => new { s.Year, s.SeasonType })
+                .HasFilter("[IsDeleted] = 0")
                 .IsUnique();
 
             builder.Entity<Pricing>()

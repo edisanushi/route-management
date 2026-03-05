@@ -23,4 +23,5 @@ export interface SeasonsState {
   isLoading: boolean;
   error: string | null;
   seasons: SeasonDto[];
+  selectedSeason: SeasonDto | null;
 }

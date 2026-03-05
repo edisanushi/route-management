@@ -132,12 +132,21 @@ $error: #ff6b6b;
 .season-actions {
   display: flex;
   justify-content: flex-end;
+  gap: 0.25rem;
 }
 
-.btn-edit mat-icon {
-    color: $white-dim;
+.btn-edit mat-icon { 
+  color: $white-dim; 
 }
 
-.btn-edit:hover mat-icon {
-    color: $white;
+.btn-edit:hover mat-icon { 
+  color: $white; 
+}
+
+.btn-delete mat-icon { 
+  color: rgba($error, 0.6); 
+}
+
+.btn-delete:hover mat-icon { 
+  color: $error; 
 }

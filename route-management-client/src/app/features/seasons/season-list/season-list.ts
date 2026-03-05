@@ -25,4 +25,10 @@ export class SeasonList implements OnInit {
     this.isAdmin$ = this.store.select(selectIsAdmin);
     this.store.dispatch(SeasonsActions.loadSeasons());
   }
+
+  onDelete(id: number): void {
+    if (confirm('Are you sure you want to delete this season?')) {
+      this.store.dispatch(SeasonsActions.deleteSeason({ id }));
+    }
+  }
 }

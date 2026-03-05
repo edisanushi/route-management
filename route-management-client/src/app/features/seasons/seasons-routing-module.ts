@@ -15,6 +15,12 @@ const routes: Routes = [
     component: SeasonForm, 
     canActivate: [RoleGuard], 
     data: { roles: [Roles.Admin] } 
+  },
+  { 
+    path: ':id/edit', 
+    component: SeasonForm, 
+    canActivate: [RoleGuard], 
+    data: { roles: [Roles.Admin] } 
   }
 ];
 

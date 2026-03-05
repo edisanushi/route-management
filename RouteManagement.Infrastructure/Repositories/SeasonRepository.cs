@@ -13,6 +13,11 @@ namespace RouteManagement.Infrastructure.Repositories
             return await context.Seasons.AnyAsync(s => s.Year == year && s.SeasonType == seasonType, cancellationToken);
         }
 
+        public async Task<bool> ExistsAsync(int year, SeasonType seasonType, int excludeId, CancellationToken cancellationToken)
+        {
+            return await context.Seasons.AnyAsync(s => s.Year == year && s.SeasonType == seasonType && s.Id != excludeId, cancellationToken);
+        }
+
         public async Task<Season> CreateAsync(Season season, CancellationToken cancellationToken)
         {
             context.Seasons.Add(season);
@@ -25,6 +30,17 @@ namespace RouteManagement.Infrastructure.Repositories
             return await context.Seasons.OrderByDescending(s => s.Year)
                                         .ThenBy(s => s.SeasonType)
                                         .ToListAsync(cancellationToken);
+        }
+
+        public async Task<Season?> GetByIdAsync(int id, CancellationToken cancellationToken)
+        {
+            return await context.Seasons.FirstOrDefaultAsync(s => s.Id == id, cancellationToken);
+        }
+
+        public async Task UpdateAsync(Season season, CancellationToken cancellationToken)
+        {
+            context.Seasons.Update(season);
+            await context.SaveChangesAsync(cancellationToken);
         }
 
     }

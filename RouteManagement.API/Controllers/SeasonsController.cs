@@ -19,8 +19,8 @@ namespace RouteManagement.API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.ToErrorResponse(HttpContext.TraceIdentifier));
 
-            await seasonService.CreateAsync(dto, currentUserService.UserId ?? string.Empty, cancellationToken);
-            return StatusCode(201);
+            var season = await seasonService.CreateAsync(dto, currentUserService.UserId ?? string.Empty, cancellationToken);
+            return CreatedAtAction(nameof(GetById), new { id = season.Id }, season);
         }
 
 
@@ -29,6 +29,32 @@ namespace RouteManagement.API.Controllers
         {
             var seasons = await seasonService.GetAllAsync(cancellationToken);
             return Ok(seasons);
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetById(int id, CancellationToken cancellationToken)
+        {
+            var season = await seasonService.GetByIdAsync(id, cancellationToken);
+            return Ok(season);
+        }
+
+        [HttpPut("{id:int}")]
+        [Authorize(Roles = Roles.Admin)]
+        public async Task<IActionResult> Update(int id, [FromBody] SeasonFormDto dto, CancellationToken cancellationToken)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState.ToErrorResponse(HttpContext.TraceIdentifier));
+
+            var season = await seasonService.UpdateAsync(id, dto, currentUserService.UserId ?? string.Empty, cancellationToken);
+            return Ok(season);
+        }
+
+        [HttpDelete("{id:int}")]
+        [Authorize(Roles = Roles.Admin)]
+        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
+        {
+            await seasonService.DeleteAsync(id, currentUserService.UserId ?? string.Empty, cancellationToken);
+            return NoContent();
         }
     }
 }

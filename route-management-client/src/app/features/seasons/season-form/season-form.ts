@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { SeasonType, SeasonFormDto } from '../models/season.models';
+import { Observable, Subject, takeUntil } from 'rxjs';
+import { SeasonDto, SeasonFormDto, SeasonType } from '../models/season.models';
 import { SeasonsActions } from '../store/seasons.actions';
-import { selectSeasonsLoading } from '../store/seasons.selectors';
+import { selectSelectedSeason, selectSeasonsLoading } from '../store/seasons.selectors';
 
 @Component({
   selector: 'app-season-form',
@@ -12,24 +13,53 @@ import { selectSeasonsLoading } from '../store/seasons.selectors';
   styleUrls: ['./season-form.scss'],
   standalone: false
 })
-export class SeasonForm implements OnInit {
+export class SeasonForm implements OnInit, OnDestroy {
   form!: FormGroup;
   isLoading$!: Observable<boolean>;
+  selectedSeason$!: Observable<SeasonDto | null>;
+  isEditMode = false;
+  seasonId: number | null = null;
   seasonTypes = [
     { value: SeasonType.Winter, label: 'Winter (Jan – Jun)' },
     { value: SeasonType.Summer, label: 'Summer (Jul – Dec)' }
   ];
+  private destroy$ = new Subject<void>();
 
-  constructor(private fb: FormBuilder, private store: Store) {}
+  constructor(private fb: FormBuilder, private store: Store, private activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.isLoading$ = this.store.select(selectSeasonsLoading);
+    this.selectedSeason$ = this.store.select(selectSelectedSeason);
     this.form = this.fb.group({
-      year: [new Date().getFullYear(), [Validators.required, Validators.min(2000), Validators.max(2100)]],
+      year: [null, [Validators.required, Validators.min(2000), Validators.max(2100)]],
       seasonType: [null, Validators.required],
       startDate: [null, Validators.required],
       endDate: [null, Validators.required]
     }, { validators: this.datesInSameYearValidator });
+
+    const id = this.activatedRoute.snapshot.paramMap.get('id');
+    if (id) {
+      this.isEditMode = true;
+      this.seasonId = +id;
+      this.store.dispatch(SeasonsActions.loadSeason({ id: this.seasonId }));
+
+      this.selectedSeason$.pipe(takeUntil(this.destroy$)).subscribe(season => {
+        if (season) {
+          this.form.patchValue({
+            year: season.year,
+            seasonType: season.seasonType,
+            startDate: new Date(season.startDate),
+            endDate: new Date(season.endDate)
+          });
+        }
+      });
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.store.dispatch(SeasonsActions.clearSelectedSeason());
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   get year() { return this.form.get('year'); }
@@ -59,7 +89,11 @@ export class SeasonForm implements OnInit {
       startDate: this.toIsoDate(raw.startDate),
       endDate: this.toIsoDate(raw.endDate)
     };
-    this.store.dispatch(SeasonsActions.createSeason({ dto }));
+    if (this.isEditMode && this.seasonId) {
+      this.store.dispatch(SeasonsActions.updateSeason({ id: this.seasonId, dto }));
+    } else {
+      this.store.dispatch(SeasonsActions.createSeason({ dto }));
+    }
   }
 
   onCancel(): void {
@@ -79,6 +113,20 @@ export class SeasonForm implements OnInit {
     const month = String(d.getMonth() + 1).padStart(2, '0');
     const day = String(d.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}T00:00:00`;
+  }
+
+  get startPickerStartAt(): Date | null {
+    const val = this.startDate?.value;
+    if (val) return new Date(val);
+    const year = this.year?.value;
+    return year ? new Date(year, 0, 1) : null;
+  }
+
+  get endPickerStartAt(): Date | null {
+    const val = this.endDate?.value;
+    if (val) return new Date(val);
+    const year = this.year?.value;
+    return year ? new Date(year, 0, 1) : null;
   }
 
 }

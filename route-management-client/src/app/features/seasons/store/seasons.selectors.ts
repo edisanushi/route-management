@@ -6,3 +6,4 @@ export const selectSeasonsState = createFeatureSelector<SeasonsState>('seasons')
 export const selectSeasonsLoading = createSelector(selectSeasonsState, s => s.isLoading);
 export const selectAllSeasons = createSelector(selectSeasonsState, s => s.seasons);
 export const selectSeasonsError = createSelector(selectSeasonsState, s => s.error);
+export const selectSelectedSeason = createSelector(selectSeasonsState, s => s.selectedSeason);

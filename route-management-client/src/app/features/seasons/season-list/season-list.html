@@ -35,6 +35,9 @@
           <button mat-icon-button [routerLink]="['/seasons', season.id, 'edit']" class="btn-edit">
             <mat-icon>edit</mat-icon>
           </button>
+          <button mat-icon-button (click)="onDelete(season.id)" class="btn-delete">
+            <mat-icon>delete</mat-icon>
+          </button>
         </div>
       </div>
     </div>

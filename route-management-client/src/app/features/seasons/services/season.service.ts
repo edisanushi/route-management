@@ -18,4 +18,16 @@ export class SeasonService {
     return this.http.get<SeasonDto[]>(this.apiUrl);
   }
 
+  getById(id: number): Observable<SeasonDto> {
+    return this.http.get<SeasonDto>(`${this.apiUrl}/${id}`);
+  }
+
+  update(id: number, dto: SeasonFormDto): Observable<SeasonDto> {
+    return this.http.put<SeasonDto>(`${this.apiUrl}/${id}`, dto);
+  }
+
+  delete(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
 }

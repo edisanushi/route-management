@@ -1,6 +1,7 @@
-﻿using System.Net;
-using System.Text.Json;
+﻿using Microsoft.EntityFrameworkCore;
 using RouteManagement.Application.Common.Models;
+using System.Net;
+using System.Text.Json;
 
 namespace RouteManagement.API.Middleware
 {
@@ -50,6 +51,11 @@ namespace RouteManagement.API.Middleware
                     HttpStatusCode.BadRequest,
                     "VALIDATION_ERROR",
                     exception.Message),
+
+                DbUpdateException => (
+                    HttpStatusCode.Conflict,
+                    "CONFLICT",
+                    "A database conflict occurred. The record may already exist."),
 
                 _ => (
                     HttpStatusCode.InternalServerError,
