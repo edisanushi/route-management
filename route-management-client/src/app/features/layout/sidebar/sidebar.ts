@@ -19,10 +19,11 @@ const ADMIN_NAV: NavItem[] = [
 
 const OPERATOR_NAV: NavItem[] = [
   { label: 'Dashboard', icon: 'dashboard', route: '/dashboard' },
+  { label: 'My Profile', icon: 'manage_accounts', route: '/tour-operators/profile' },
   { label: 'Routes', icon: 'alt_route', route: '/routes' },
   { label: 'Seasons', icon: 'event', route: '/seasons' },
   { label: 'Pricing', icon: 'payments', route: '/pricing' },
-];
+]
 
 @Component({
   selector: 'app-sidebar',

@@ -26,6 +26,12 @@ $white-dim: rgba(255, 255, 255, 0.7);
   margin: 0;
 }
 
+.loading-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 4rem 0;
+}
+
 .form-card {
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -36,6 +42,16 @@ $white-dim: rgba(255, 255, 255, 0.7);
 .form-field {
   width: 100%;
   margin-bottom: 1rem;
+}
+
+.input-icon {
+  color: rgba(255, 255, 255, 0.45);
+  margin-right: 0.25rem;
+}
+
+.form-divider {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  margin: 0.5rem 0 1.5rem;
 }
 
 .form-actions {
@@ -53,5 +69,5 @@ $white-dim: rgba(255, 255, 255, 0.7);
 .btn-submit {
   background: $gold !important;
   color: #0a1628 !important;
-  font-weight: 600 !important;
+  font-weight: 600;
 }

@@ -13,7 +13,6 @@ using RouteManagement.Infrastructure.Repositories;
 using RouteManagement.Infrastructure.Services;
 using System.Text;
 
-
 namespace RouteManagement.Infrastructure
 {
     public static class DependencyInjection
@@ -38,7 +37,6 @@ namespace RouteManagement.Infrastructure
             return services;
         }
 
-
         private static IServiceCollection AddIdentityConfiguration(this IServiceCollection services)
         {
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
@@ -50,19 +48,19 @@ namespace RouteManagement.Infrastructure
                 options.Password.RequiredLength = 8;
                 options.User.RequireUniqueEmail = true;
             })
-            .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
-            
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders();
+
             return services;
         }
-
 
         private static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             var jwtSettings = configuration.GetSection(JwtSettings.SectionName).Get<JwtSettings>()
               ?? throw new InvalidOperationException("JwtSettings configuration not found.");
-            
+
             services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.SectionName));
-            
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -87,7 +85,6 @@ namespace RouteManagement.Infrastructure
             return services;
         }
 
-
         private static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddScoped<IJwtService, JwtService>();
@@ -99,7 +96,8 @@ namespace RouteManagement.Infrastructure
             services.AddScoped<IRouteService, RouteService>();
             services.AddScoped<ISeasonService, SeasonService>();
             services.AddScoped<ISeasonRepository, SeasonRepository>();
-
+            services.AddScoped<ITourOperatorRepository, TourOperatorRepository>();
+            services.AddScoped<ITourOperatorService, TourOperatorService>();
             return services;
         }
     }

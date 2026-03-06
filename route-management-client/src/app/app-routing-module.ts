@@ -40,6 +40,12 @@ const routes: Routes = [
             .then(m => m.SeasonsModule)
       },
       {
+        path: 'tour-operators',
+        loadChildren: () =>
+          import('./features/tour-operators/tour-operators-module')
+            .then(m => m.TourOperatorsModule)
+      },
+      {
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full'

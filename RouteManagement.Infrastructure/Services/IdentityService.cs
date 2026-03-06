@@ -18,7 +18,7 @@ namespace RouteManagement.Infrastructure.Services
                 throw new UnauthorizedAccessException("Invalid email or password.");
 
             var passwordValid = await userManager.CheckPasswordAsync(user, request.Password);
-
+            
             if (!passwordValid)
                 throw new UnauthorizedAccessException("Invalid email or password.");
 
@@ -32,9 +32,7 @@ namespace RouteManagement.Infrastructure.Services
                 Role = roles.FirstOrDefault() ?? string.Empty,
                 ExpiresAt = jwtService.GetExpirationDate()
             };
-
         }
-
 
         public async Task<RegisterResponse> RegisterAsync(RegisterRequest request, string createdBy, CancellationToken cancellationToken)
         {
@@ -62,6 +60,41 @@ namespace RouteManagement.Infrastructure.Services
                 Email = user.Email!,
                 Role = Roles.TourOperatorMember
             };
+        }
+
+        public async Task<(bool Succeeded, IEnumerable<string> Errors)> CreateUserAsync(string email, string password, string role, string createdBy)
+        {
+            var existingUser = await userManager.FindByEmailAsync(email);
+            if (existingUser is not null)
+                return (false, new[] { "A user with this email already exists." });
+
+            var user = new ApplicationUser
+            {
+                UserName = email,
+                Email = email,
+                EmailConfirmed = true,
+                CreatedOn = DateTime.UtcNow,
+                CreatedBy = createdBy
+            };
+
+            var result = await userManager.CreateAsync(user, password);
+            if (!result.Succeeded)
+                return (false, result.Errors.Select(e => e.Description));
+
+            await userManager.AddToRoleAsync(user, role);
+            return (true, Enumerable.Empty<string>());
+        }
+
+        public async Task<string?> GetUserIdByEmailAsync(string email)
+        {
+            var user = await userManager.FindByEmailAsync(email);
+            return user?.Id;
+        }
+
+        public async Task<string?> GetEmailByUserIdAsync(string userId)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            return user?.Email;
         }
     }
 }

@@ -1,0 +1,55 @@
+<div class="page-wrapper">
+  <div class="page-header">
+    <h1 class="page-title">Tour Operators</h1>
+    <button mat-raised-button class="btn-add" routerLink="/tour-operators/new">
+      <mat-icon>add</mat-icon>
+      New Tour Operator
+    </button>
+  </div>
+
+  <div *ngIf="isLoading$ | async" class="loading-wrapper">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <ng-container *ngIf="!(isLoading$ | async)">
+    <div *ngIf="(tourOperators$ | async)?.length === 0" class="empty-state">
+      <mat-icon class="empty-icon">business</mat-icon>
+      <p>No tour operators found.</p>
+    </div>
+
+    <div class="operators-grid" *ngIf="(tourOperators$ | async)?.length! > 0">
+      <div class="operator-card" *ngFor="let operator of tourOperators$ | async">
+        <div class="operator-header">
+          <mat-icon class="operator-icon">business</mat-icon>
+          <span class="operator-name">{{ operator.name }}</span>
+        </div>
+        <div class="operator-details">
+          <div class="detail-row" *ngIf="operator.userEmail">
+            <mat-icon class="detail-icon">mail_outline</mat-icon>
+            <span>{{ operator.userEmail }}</span>
+          </div>
+          <div class="detail-row" *ngIf="operator.contactPerson?.trim()">
+            <mat-icon class="detail-icon">person_outline</mat-icon>
+            <span>{{ operator.contactPerson }}</span>
+          </div>
+          <div class="detail-row" *ngIf="operator.contactEmail?.trim()">
+            <mat-icon class="detail-icon">contact_mail</mat-icon>
+            <span>{{ operator.contactEmail }}</span>
+          </div>
+          <div class="detail-row" *ngIf="operator.phoneNumber?.trim()">
+            <mat-icon class="detail-icon">phone</mat-icon>
+            <span>{{ operator.phoneNumber }}</span>
+          </div>
+        </div>
+        <div class="operator-actions">
+          <button mat-icon-button [routerLink]="['/tour-operators', operator.id, 'edit']" class="btn-edit">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="onDelete(operator.id)" class="btn-delete">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
