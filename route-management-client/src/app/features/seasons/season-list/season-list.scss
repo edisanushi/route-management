@@ -1,6 +1,6 @@
+$gold: #f4c542;
 $white: #ffffff;
 $white-dim: rgba(255, 255, 255, 0.7);
-$gold: #f4c542;
 $error: #ff6b6b;
 
 .page-wrapper {
@@ -23,8 +23,8 @@ $error: #ff6b6b;
 }
 
 .btn-add {
-  background: $gold !important;
-  color: #0a1628 !important;
+  background: $gold;
+  color: #0a1628;
   font-weight: 600;
 }
 
@@ -49,7 +49,10 @@ $error: #ff6b6b;
     opacity: 0.4;
   }
 
-  p { margin: 0; font-size: 1rem; }
+  p {
+    margin: 0;
+    font-size: 1rem;
+  }
 }
 
 .seasons-grid {
@@ -135,18 +138,25 @@ $error: #ff6b6b;
   gap: 0.25rem;
 }
 
-.btn-edit mat-icon { 
-  color: $white-dim; 
-}
+.btn-edit mat-icon { color: $white-dim; }
+.btn-edit:hover mat-icon { color: $white; }
+.btn-delete mat-icon { color: rgba($error, 0.6); }
+.btn-delete:hover mat-icon { color: $error; }
 
-.btn-edit:hover mat-icon { 
-  color: $white; 
-}
+.btn-assign {
+  color: $white-dim !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  font-size: 0.8rem;
 
-.btn-delete mat-icon { 
-  color: rgba($error, 0.6); 
-}
+  mat-icon {
+    font-size: 1rem !important;
+    width: 1rem !important;
+    height: 1rem !important;
+    margin-right: 0.25rem;
+  }
 
-.btn-delete:hover mat-icon { 
-  color: $error; 
+  &:hover {
+    color: $gold !important;
+    border-color: rgba($gold, 0.4) !important;
+  }
 }

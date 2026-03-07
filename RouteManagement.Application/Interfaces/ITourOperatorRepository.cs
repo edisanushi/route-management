@@ -12,5 +12,10 @@ namespace RouteManagement.Application.Interfaces
         Task<TourOperator?> GetByIdAsync(int id, CancellationToken cancellationToken);
         Task<TourOperator?> GetByUserIdAsync(string userId, CancellationToken cancellationToken);
         Task UpdateAsync(TourOperator tourOperator, CancellationToken cancellationToken);
+        Task<List<TourOperatorBookingClass>> GetBookingClassesByTourOperatorIdAsync(int tourOperatorId, CancellationToken cancellationToken);
+        Task<List<OperatorSeasonRoute>> GetSeasonRoutesByOperatorAndSeasonAsync(int tourOperatorId, int seasonId, CancellationToken cancellationToken);
+        Task<List<OperatorSeasonRoute>> GetSeasonRoutesByOperatorAndRouteAsync(int tourOperatorId, int routeId, CancellationToken cancellationToken);
+        Task UpdateBookingClassesAsync(List<TourOperatorBookingClass> toUpdate, List<TourOperatorBookingClass> toAdd, CancellationToken cancellationToken);
+        Task UpdateSeasonRoutesAsync(List<OperatorSeasonRoute> toUpdate, List<OperatorSeasonRoute> toAdd, CancellationToken cancellationToken);
     }
 }

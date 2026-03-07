@@ -1,8 +1,6 @@
 $gold: #f4c542;
 $white: #ffffff;
 $white-dim: rgba(255, 255, 255, 0.7);
-$sky-mid: #0d2347;
-$sky-light: #1a3a6b;
 $error: #ff6b6b;
 
 .page-wrapper {
@@ -28,9 +26,6 @@ $error: #ff6b6b;
   background: $gold !important;
   color: #0a1628 !important;
   font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
 }
 
 .loading-wrapper {
@@ -122,7 +117,24 @@ $error: #ff6b6b;
 }
 
 .btn-edit mat-icon { color: $white-dim; }
-.btn-delete mat-icon { color: rgba($error, 0.7); }
-
 .btn-edit:hover mat-icon { color: $white; }
+.btn-delete mat-icon { color: rgba($error, 0.7); }
 .btn-delete:hover mat-icon { color: $error; }
+
+.btn-assign {
+  color: $white-dim !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  font-size: 0.8rem;
+
+  mat-icon {
+    font-size: 1rem !important;
+    width: 1rem !important;
+    height: 1rem !important;
+    margin-right: 0.25rem;
+  }
+
+  &:hover {
+    color: $gold !important;
+    border-color: rgba($gold, 0.4) !important;
+  }
+}

@@ -37,4 +37,28 @@ export class TourOperatorService {
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+  getBookingClassIds(id: number): Observable<number[]> {
+    return this.http.get<number[]>(`${this.apiUrl}/${id}/bookingclasses`);
+  }
+
+  updateBookingClasses(id: number, bookingClassIds: number[]): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/${id}/bookingclasses`, bookingClassIds);
+  }
+
+  getSeasonRouteIds(id: number, seasonId: number): Observable<number[]> {
+    return this.http.get<number[]>(`${this.apiUrl}/${id}/seasons/${seasonId}/routes`);
+  }
+
+  updateSeasonRoutes(id: number, seasonId: number, routeIds: number[]): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/${id}/seasons/${seasonId}/routes`, routeIds);
+  }
+
+  getRouteSeasonIds(id: number, routeId: number): Observable<number[]> {
+    return this.http.get<number[]>(`${this.apiUrl}/${id}/routes/${routeId}/seasons`);
+  }
+
+  updateRouteSeasons(id: number, routeId: number, seasonIds: number[]): Observable<void> {
+    return this.http.put<void>(`${this.apiUrl}/${id}/routes/${routeId}/seasons`, seasonIds);
+  }
 }

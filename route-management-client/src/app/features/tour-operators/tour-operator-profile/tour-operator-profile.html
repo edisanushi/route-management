@@ -8,54 +8,90 @@
   </div>
 
   <ng-container *ngIf="!(isLoading$ | async) && (profile$ | async) as profile">
-    <div class="profile-info-card">
-      <div class="info-row">
-        <mat-icon class="info-icon">business</mat-icon>
-        <div class="info-content">
-          <span class="info-label">Company</span>
-          <span class="info-value">{{ profile.name }}</span>
+    <div class="columns">
+
+      <div class="column">
+        <div class="profile-info-card">
+          <div class="info-row">
+            <mat-icon class="info-icon">business</mat-icon>
+            <div class="info-content">
+              <span class="info-label">Company</span>
+              <span class="info-value">{{ profile.name }}</span>
+            </div>
+          </div>
+          <div class="info-row">
+            <mat-icon class="info-icon">mail_outline</mat-icon>
+            <div class="info-content">
+              <span class="info-label">Login Email</span>
+              <span class="info-value">{{ profile.userEmail }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-card">
+          <h2 class="form-section-title">Contact Information</h2>
+          <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Contact Person</mat-label>
+              <mat-icon matPrefix class="input-icon">person_outline</mat-icon>
+              <input matInput formControlName="contactPerson" placeholder="e.g. Jane Doe" />
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Contact Email</mat-label>
+              <mat-icon matPrefix class="input-icon">contact_mail</mat-icon>
+              <input matInput type="email" formControlName="contactEmail" placeholder="contact@example.com" />
+              <mat-error *ngIf="contactEmail?.invalid && contactEmail?.touched">Enter a valid email address.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field">
+              <mat-label>Phone Number</mat-label>
+              <mat-icon matPrefix class="input-icon">phone</mat-icon>
+              <input matInput formControlName="phoneNumber" placeholder="e.g. +355 69 123 4567" />
+            </mat-form-field>
+
+            <div class="form-actions">
+              <button type="submit" mat-raised-button class="btn-submit" [disabled]="isLoading$ | async">
+                <mat-icon>save</mat-icon>
+                Save Changes
+              </button>
+            </div>
+          </form>
         </div>
       </div>
-      <div class="info-row">
-        <mat-icon class="info-icon">mail_outline</mat-icon>
-        <div class="info-content">
-          <span class="info-label">Login Email</span>
-          <span class="info-value">{{ profile.userEmail }}</span>
+
+      <div class="column">
+        <div class="form-card">
+          <h2 class="form-section-title">Booking Classes</h2>
+          <p class="booking-classes-subtitle">Select the booking classes you support.</p>
+
+          <ng-container *ngIf="bookingClassesLoading$ | async; else classList">
+            <div class="loading-wrapper">
+              <mat-spinner diameter="32"></mat-spinner>
+            </div>
+          </ng-container>
+
+          <ng-template #classList>
+            <div class="booking-classes-list">
+              <mat-checkbox
+                *ngFor="let bc of bookingClasses"
+                [checked]="isBookingClassSelected(bc.id)"
+                (change)="toggleBookingClass(bc.id)"
+                class="booking-class-checkbox">
+                {{ bc.name }}
+              </mat-checkbox>
+            </div>
+          </ng-template>
+
+          <div class="form-actions">
+            <button type="button" mat-raised-button class="btn-submit" (click)="onSaveBookingClasses()" [disabled]="bookingClassesLoading$ | async">
+              <mat-icon>save</mat-icon>
+              Save Booking Classes
+            </button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="form-card">
-      <h2 class="form-section-title">Contact Information</h2>
-      <form [formGroup]="form" (ngSubmit)="onSubmit()">
-
-        <mat-form-field appearance="outline" class="form-field">
-          <mat-label>Contact Person</mat-label>
-          <mat-icon matPrefix class="input-icon">person_outline</mat-icon>
-          <input matInput formControlName="contactPerson" placeholder="e.g. Jane Doe" />
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="form-field">
-          <mat-label>Contact Email</mat-label>
-          <mat-icon matPrefix class="input-icon">contact_mail</mat-icon>
-          <input matInput type="email" formControlName="contactEmail" placeholder="contact@example.com" />
-          <mat-error *ngIf="contactEmail?.invalid && contactEmail?.touched">Enter a valid email address.</mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="form-field">
-          <mat-label>Phone Number</mat-label>
-          <mat-icon matPrefix class="input-icon">phone</mat-icon>
-          <input matInput formControlName="phoneNumber" placeholder="e.g. +355 69 123 4567" />
-        </mat-form-field>
-
-        <div class="form-actions">
-          <button type="submit" mat-raised-button class="btn-submit" [disabled]="isLoading$ | async">
-            <mat-icon>save</mat-icon>
-            Save Changes
-          </button>
-        </div>
-
-      </form>
     </div>
   </ng-container>
 </div>

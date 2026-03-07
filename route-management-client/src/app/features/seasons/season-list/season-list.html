@@ -27,17 +27,25 @@
           <span class="season-year">{{ season.year }}</span>
         </div>
         <div class="season-dates">
-          <span>{{ season.startDate | date: 'd MMM yyyy' }}</span>
+          <span>{{ season.startDate | date:'d MMM yyyy' }}</span>
           <mat-icon class="date-arrow">arrow_forward</mat-icon>
-          <span>{{ season.endDate | date: 'd MMM yyyy' }}</span>
+          <span>{{ season.endDate | date:'d MMM yyyy' }}</span>
         </div>
-        <div class="season-actions" *ngIf="isAdmin$ | async">
-          <button mat-icon-button [routerLink]="['/seasons', season.id, 'edit']" class="btn-edit">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button (click)="onDelete(season.id)" class="btn-delete">
-            <mat-icon>delete</mat-icon>
-          </button>
+        <div class="season-actions">
+          <ng-container *ngIf="isAdmin$ | async">
+            <button mat-icon-button [routerLink]="['/seasons', season.id, 'edit']" class="btn-edit">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button (click)="onDelete(season.id)" class="btn-delete">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </ng-container>
+          <ng-container *ngIf="isTourOperator$ | async">
+            <button mat-stroked-button class="btn-assign" (click)="onAssignRoutes(season)">
+              <mat-icon>alt_route</mat-icon>
+              Routes
+            </button>
+          </ng-container>
         </div>
       </div>
     </div>

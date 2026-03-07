@@ -1,0 +1,36 @@
+$gold: #f4c542;
+$white-dim: rgba(255, 255, 255, 0.85);
+
+h2[mat-dialog-title] {
+  color: $gold;
+}
+
+.dialog-subtitle {
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+}
+
+.dialog-loader {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 320px;
+}
+
+.btn-cancel {
+  color: $white-dim !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+.btn-submit {
+  background: $gold !important;
+  color: #0a1628 !important;
+  font-weight: 600;
+}

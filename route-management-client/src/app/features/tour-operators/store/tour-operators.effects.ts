@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, exhaustMap, map, of, tap } from 'rxjs';
+import { catchError, exhaustMap, map, of, switchMap, tap } from 'rxjs';
 import { TourOperatorService } from '../services/tour-operator.service';
 import { TourOperatorsActions } from './tour-operators.actions';
 import { NotificationService } from '../../../core/services/notification.service';
@@ -15,7 +15,7 @@ export class TourOperatorsEffects {
   loadTourOperators$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TourOperatorsActions.loadTourOperators),
-      exhaustMap(() =>
+      switchMap(() =>
         this.tourOperatorService.getAll().pipe(
           map(tourOperators => TourOperatorsActions.loadTourOperatorsSuccess({ tourOperators })),
           catchError(error => of(TourOperatorsActions.loadTourOperatorsFailure({
@@ -29,7 +29,7 @@ export class TourOperatorsEffects {
   loadTourOperator$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TourOperatorsActions.loadTourOperator),
-      exhaustMap(({ id }) =>
+      switchMap(({ id }) =>
         this.tourOperatorService.getById(id).pipe(
           map(tourOperator => TourOperatorsActions.loadTourOperatorSuccess({ tourOperator })),
           catchError(error => of(TourOperatorsActions.loadTourOperatorFailure({
@@ -43,7 +43,7 @@ export class TourOperatorsEffects {
   loadMyProfile$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TourOperatorsActions.loadMyProfile),
-      exhaustMap(() =>
+      switchMap(() =>
         this.tourOperatorService.getMyProfile().pipe(
           map(tourOperator => TourOperatorsActions.loadMyProfileSuccess({ tourOperator })),
           catchError(error => of(TourOperatorsActions.loadMyProfileFailure({
@@ -148,6 +148,70 @@ export class TourOperatorsEffects {
     { dispatch: false }
   );
 
+  loadBookingClassIds$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TourOperatorsActions.loadBookingClassIds),
+      switchMap(({ id }) =>
+        this.tourOperatorService.getBookingClassIds(id).pipe(
+          map(bookingClassIds => TourOperatorsActions.loadBookingClassIdsSuccess({ bookingClassIds })),
+          catchError(error => of(TourOperatorsActions.loadBookingClassIdsFailure({
+            error: error.error?.message ?? 'Failed to load booking classes.'
+          })))
+        )
+      )
+    )
+  );
+
+  updateBookingClasses$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TourOperatorsActions.updateBookingClasses),
+      exhaustMap(({ id, bookingClassIds }) =>
+        this.tourOperatorService.updateBookingClasses(id, bookingClassIds).pipe(
+          map(() => TourOperatorsActions.updateBookingClassesSuccess()),
+          catchError(error => of(TourOperatorsActions.updateBookingClassesFailure({
+            error: error.error?.message ?? 'Failed to update booking classes.'
+          })))
+        )
+      )
+    )
+  );
+
+  updateBookingClassesSuccess$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TourOperatorsActions.updateBookingClassesSuccess),
+      tap(() => this.notification.success('Booking classes updated successfully.'))
+    ),
+    { dispatch: false }
+  );
+
+  loadSeasonRouteIds$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TourOperatorsActions.loadSeasonRouteIds),
+      switchMap(({ id, seasonId }) =>
+        this.tourOperatorService.getSeasonRouteIds(id, seasonId).pipe(
+          map(routeIds => TourOperatorsActions.loadSeasonRouteIdsSuccess({ routeIds })),
+          catchError(error => of(TourOperatorsActions.loadSeasonRouteIdsFailure({
+            error: error.error?.message ?? 'Failed to load season routes.'
+          })))
+        )
+      )
+    )
+  );
+
+  loadRouteSeasonIds$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TourOperatorsActions.loadRouteSeasonIds),
+      switchMap(({ id, routeId }) =>
+        this.tourOperatorService.getRouteSeasonIds(id, routeId).pipe(
+          map(seasonIds => TourOperatorsActions.loadRouteSeasonIdsSuccess({ seasonIds })),
+          catchError(error => of(TourOperatorsActions.loadRouteSeasonIdsFailure({
+            error: error.error?.message ?? 'Failed to load route seasons.'
+          })))
+        )
+      )
+    )
+  );
+
   failure$ = createEffect(() =>
     this.actions$.pipe(
       ofType(
@@ -157,7 +221,11 @@ export class TourOperatorsEffects {
         TourOperatorsActions.createTourOperatorFailure,
         TourOperatorsActions.updateTourOperatorFailure,
         TourOperatorsActions.updateMyProfileFailure,
-        TourOperatorsActions.deleteTourOperatorFailure
+        TourOperatorsActions.deleteTourOperatorFailure,
+        TourOperatorsActions.loadBookingClassIdsFailure,
+        TourOperatorsActions.updateBookingClassesFailure,
+        TourOperatorsActions.loadSeasonRouteIdsFailure,
+        TourOperatorsActions.loadRouteSeasonIdsFailure,
       ),
       tap(({ error }) => this.notification.error(error))
     ),

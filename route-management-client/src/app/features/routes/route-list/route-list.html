@@ -34,13 +34,21 @@
               {{ bookingClasses | bookingClassName: id }}
             </span>
           </div>
-          <div class="route-actions" *ngIf="isAdmin$ | async">
-            <button mat-icon-button [routerLink]="['/routes', route.id, 'edit']" class="btn-edit">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button (click)="onDelete(route.id)" class="btn-delete">
-              <mat-icon>delete</mat-icon>
-            </button>
+          <div class="route-actions">
+            <ng-container *ngIf="isAdmin$ | async">
+              <button mat-icon-button [routerLink]="['/routes', route.id, 'edit']" class="btn-edit">
+                <mat-icon>edit</mat-icon>
+              </button>
+              <button mat-icon-button (click)="onDelete(route.id)" class="btn-delete">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </ng-container>
+            <ng-container *ngIf="isTourOperator$ | async">
+              <button mat-stroked-button class="btn-assign" (click)="onAssignSeasons(route)">
+                <mat-icon>event</mat-icon>
+                Seasons
+              </button>
+            </ng-container>
           </div>
         </div>
       </div>

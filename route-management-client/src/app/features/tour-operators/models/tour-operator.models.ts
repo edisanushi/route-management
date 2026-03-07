@@ -35,4 +35,10 @@ export interface TourOperatorsState {
   selectedTourOperator: TourOperatorDto | null;
   isLoading: boolean;
   error: string | null;
+  bookingClassIds: number[];
+  bookingClassesLoading: boolean;
+  seasonRouteIds: number[];
+  seasonRoutesLoading: boolean;
+  routeSeasonIds: number[];
+  routeSeasonsLoading: boolean;
 }

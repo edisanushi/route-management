@@ -32,6 +32,32 @@ export const TourOperatorsActions = createActionGroup({
     'Delete Tour Operator Success': props<{ id: number }>(),
     'Delete Tour Operator Failure': props<{ error: string }>(),
 
-    'Clear Selected Tour Operator': emptyProps()
+    'Clear Selected Tour Operator': emptyProps(),
+
+    'Load Booking Class Ids': props<{ id: number }>(),
+    'Load Booking Class Ids Success': props<{ bookingClassIds: number[] }>(),
+    'Load Booking Class Ids Failure': props<{ error: string }>(),
+
+    'Update Booking Classes': props<{ id: number; bookingClassIds: number[] }>(),
+    'Update Booking Classes Success': emptyProps(),
+    'Update Booking Classes Failure': props<{ error: string }>(),
+
+    'Load Season Route Ids': props<{ id: number; seasonId: number }>(),
+    'Load Season Route Ids Success': props<{ routeIds: number[] }>(),
+    'Load Season Route Ids Failure': props<{ error: string }>(),
+
+    'Update Season Routes': props<{ id: number; seasonId: number; routeIds: number[] }>(),
+    'Update Season Routes Success': emptyProps(),
+    'Update Season Routes Failure': props<{ error: string }>(),
+
+    'Load Route Season Ids': props<{ id: number; routeId: number }>(),
+    'Load Route Season Ids Success': props<{ seasonIds: number[] }>(),
+    'Load Route Season Ids Failure': props<{ error: string }>(),
+
+    'Update Route Seasons': props<{ id: number; routeId: number; seasonIds: number[] }>(),
+    'Update Route Seasons Success': emptyProps(),
+    'Update Route Seasons Failure': props<{ error: string }>(),
+
+    'Reset Assignment State': emptyProps(),
   }
 });

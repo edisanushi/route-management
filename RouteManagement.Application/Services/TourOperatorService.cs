@@ -47,7 +47,7 @@ namespace RouteManagement.Application.Services
                                ?? throw new KeyNotFoundException($"Tour operator with id {id} was not found.");
 
             var email = tourOperator.UserId != null ? await identityService.GetEmailByUserIdAsync(tourOperator.UserId) : null;
-
+            
             return MapToDto(tourOperator, email);
         }
 
@@ -58,7 +58,7 @@ namespace RouteManagement.Application.Services
                                ?? throw new KeyNotFoundException($"Tour operator for user {userId} was not found.");
 
             var email = await identityService.GetEmailByUserIdAsync(userId);
-
+            
             return MapToDto(tourOperator, email);
         }
 
@@ -81,7 +81,7 @@ namespace RouteManagement.Application.Services
             await tourOperatorRepository.UpdateAsync(tourOperator, cancellationToken);
 
             var email = tourOperator.UserId != null ? await identityService.GetEmailByUserIdAsync(tourOperator.UserId) : null;
-
+            
             return MapToDto(tourOperator, email);
         }
 
@@ -103,7 +103,7 @@ namespace RouteManagement.Application.Services
             await tourOperatorRepository.UpdateAsync(tourOperator, cancellationToken);
 
             var email = await identityService.GetEmailByUserIdAsync(userId);
-
+            
             return MapToDto(tourOperator, email);
         }
 
@@ -121,6 +121,109 @@ namespace RouteManagement.Application.Services
             await tourOperatorRepository.UpdateAsync(tourOperator, cancellationToken);
         }
 
+
+        public async Task<List<int>> GetBookingClassIdsAsync(int tourOperatorId, CancellationToken cancellationToken)
+        {
+            var records = await tourOperatorRepository.GetBookingClassesByTourOperatorIdAsync(tourOperatorId, cancellationToken);
+            return records.Where(r => !r.IsDeleted).Select(r => r.BookingClassId).ToList();
+        }
+
+
+        public async Task UpdateBookingClassesAsync(int tourOperatorId, List<int> bookingClassIds, string updatedBy, CancellationToken cancellationToken)
+        {
+            var existing = await tourOperatorRepository.GetBookingClassesByTourOperatorIdAsync(tourOperatorId, cancellationToken);
+            var existingIds = existing.Select(r => r.BookingClassId).ToList();
+
+            foreach (var record in existing)
+            {
+                record.IsDeleted = !bookingClassIds.Contains(record.BookingClassId);
+                record.DeletedOn = record.IsDeleted ? DateTime.Now : null;
+                record.UpdatedOn = DateTime.Now;
+                record.UpdatedBy = updatedBy;
+            }
+
+            var toAdd = bookingClassIds
+                .Where(id => !existingIds.Contains(id))
+                .Select(id => new TourOperatorBookingClass
+                {
+                    TourOperatorId = tourOperatorId,
+                    BookingClassId = id,
+                    CreatedOn = DateTime.Now,
+                    CreatedBy = updatedBy
+                }).ToList();
+
+            await tourOperatorRepository.UpdateBookingClassesAsync(existing, toAdd, cancellationToken);
+        }
+
+
+        public async Task<List<int>> GetSeasonRouteIdsAsync(int tourOperatorId, int seasonId, CancellationToken cancellationToken)
+        {
+            var records = await tourOperatorRepository.GetSeasonRoutesByOperatorAndSeasonAsync(tourOperatorId, seasonId, cancellationToken);
+            return records.Where(r => !r.IsDeleted).Select(r => r.RouteId).ToList();
+        }
+
+
+        public async Task UpdateSeasonRoutesAsync(int tourOperatorId, int seasonId, List<int> routeIds, string updatedBy, CancellationToken cancellationToken)
+        {
+            var existing = await tourOperatorRepository.GetSeasonRoutesByOperatorAndSeasonAsync(tourOperatorId, seasonId, cancellationToken);
+            var existingRouteIds = existing.Select(r => r.RouteId).ToList();
+
+            foreach (var record in existing)
+            {
+                record.IsDeleted = !routeIds.Contains(record.RouteId);
+                record.DeletedOn = record.IsDeleted ? DateTime.Now : null;
+                record.UpdatedOn = DateTime.Now;
+                record.UpdatedBy = updatedBy;
+            }
+
+            var toAdd = routeIds
+                .Where(id => !existingRouteIds.Contains(id))
+                .Select(id => new OperatorSeasonRoute
+                {
+                    TourOperatorId = tourOperatorId,
+                    SeasonId = seasonId,
+                    RouteId = id,
+                    CreatedOn = DateTime.Now,
+                    CreatedBy = updatedBy
+                }).ToList();
+
+            await tourOperatorRepository.UpdateSeasonRoutesAsync(existing, toAdd, cancellationToken);
+        }
+
+
+        public async Task<List<int>> GetRouteSeasonIdsAsync(int tourOperatorId, int routeId, CancellationToken cancellationToken)
+        {
+            var records = await tourOperatorRepository.GetSeasonRoutesByOperatorAndRouteAsync(tourOperatorId, routeId, cancellationToken);
+            return records.Where(r => !r.IsDeleted).Select(r => r.SeasonId).ToList();
+        }
+
+
+        public async Task UpdateRouteReasonsAsync(int tourOperatorId, int routeId, List<int> seasonIds, string updatedBy, CancellationToken cancellationToken)
+        {
+            var existing = await tourOperatorRepository.GetSeasonRoutesByOperatorAndRouteAsync(tourOperatorId, routeId, cancellationToken);
+            var existingSeasonIds = existing.Select(r => r.SeasonId).ToList();
+
+            foreach (var record in existing)
+            {
+                record.IsDeleted = !seasonIds.Contains(record.SeasonId);
+                record.DeletedOn = record.IsDeleted ? DateTime.Now : null;
+                record.UpdatedOn = DateTime.Now;
+                record.UpdatedBy = updatedBy;
+            }
+
+            var toAdd = seasonIds
+                .Where(id => !existingSeasonIds.Contains(id))
+                .Select(id => new OperatorSeasonRoute
+                {
+                    TourOperatorId = tourOperatorId,
+                    SeasonId = id,
+                    RouteId = routeId,
+                    CreatedOn = DateTime.Now,
+                    CreatedBy = updatedBy
+                }).ToList();
+
+            await tourOperatorRepository.UpdateSeasonRoutesAsync(existing, toAdd, cancellationToken);
+        }
 
         private static TourOperatorDto MapToDto(TourOperator tourOp, string? userEmail = null)
         {

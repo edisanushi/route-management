@@ -11,8 +11,8 @@ namespace RouteManagement.API.Controllers
     [Route("api/[controller]")]
     [Authorize]
     public class TourOperatorsController(
-      ITourOperatorService tourOperatorService,
-      ICurrentUserService currentUserService) : ControllerBase
+        ITourOperatorService tourOperatorService,
+        ICurrentUserService currentUserService) : ControllerBase
     {
         [HttpGet]
         [Authorize(Roles = Roles.Admin)]
@@ -82,6 +82,60 @@ namespace RouteManagement.API.Controllers
         public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
         {
             await tourOperatorService.DeleteAsync(id, currentUserService.UserId ?? string.Empty, cancellationToken);
+            return NoContent();
+        }
+
+
+        [HttpGet("{id:int}/bookingclasses")]
+        [Authorize(Roles = Roles.TourOperatorMember)]
+        public async Task<IActionResult> GetBookingClasses(int id, CancellationToken cancellationToken)
+        {
+            var result = await tourOperatorService.GetBookingClassIdsAsync(id, cancellationToken);
+            return Ok(result);
+        }
+
+
+        [HttpPut("{id:int}/bookingclasses")]
+        [Authorize(Roles = Roles.TourOperatorMember)]
+        public async Task<IActionResult> UpdateBookingClasses(int id, [FromBody] List<int> bookingClassIds, CancellationToken cancellationToken)
+        {
+            await tourOperatorService.UpdateBookingClassesAsync(id, bookingClassIds, currentUserService.UserId ?? string.Empty, cancellationToken);
+            return NoContent();
+        }
+
+
+        [HttpGet("{id:int}/seasons/{seasonId:int}/routes")]
+        [Authorize(Roles = Roles.TourOperatorMember)]
+        public async Task<IActionResult> GetSeasonRoutes(int id, int seasonId, CancellationToken cancellationToken)
+        {
+            var result = await tourOperatorService.GetSeasonRouteIdsAsync(id, seasonId, cancellationToken);
+            return Ok(result);
+        }
+
+
+        [HttpPut("{id:int}/seasons/{seasonId:int}/routes")]
+        [Authorize(Roles = Roles.TourOperatorMember)]
+        public async Task<IActionResult> UpdateSeasonRoutes(int id, int seasonId, [FromBody] List<int> routeIds, CancellationToken cancellationToken)
+        {
+            await tourOperatorService.UpdateSeasonRoutesAsync(id, seasonId, routeIds, currentUserService.UserId ?? string.Empty, cancellationToken);
+            return NoContent();
+        }
+
+
+        [HttpGet("{id:int}/routes/{routeId:int}/seasons")]
+        [Authorize(Roles = Roles.TourOperatorMember)]
+        public async Task<IActionResult> GetRouteSeasons(int id, int routeId, CancellationToken cancellationToken)
+        {
+            var result = await tourOperatorService.GetRouteSeasonIdsAsync(id, routeId, cancellationToken);
+            return Ok(result);
+        }
+
+
+        [HttpPut("{id:int}/routes/{routeId:int}/seasons")]
+        [Authorize(Roles = Roles.TourOperatorMember)]
+        public async Task<IActionResult> UpdateRouteSeasons(int id, int routeId, [FromBody] List<int> seasonIds, CancellationToken cancellationToken)
+        {
+            await tourOperatorService.UpdateRouteReasonsAsync(id, routeId, seasonIds, currentUserService.UserId ?? string.Empty, cancellationToken);
             return NoContent();
         }
     }

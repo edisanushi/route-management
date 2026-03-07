@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>Assign Seasons — {{ data.routeName }}</h2>
+<mat-dialog-content>
+  <p class="dialog-subtitle">Select the seasons you operate this route in.</p>
+  <ng-container *ngIf="isLoading">
+    <div class="dialog-loader">
+      <mat-spinner diameter="32"></mat-spinner>
+    </div>
+  </ng-container>
+  <div class="options-list" *ngIf="!isLoading">
+    <mat-checkbox
+      *ngFor="let season of seasons"
+      [checked]="isSelected(season.id)"
+      (change)="toggle(season.id)">
+      {{ season.seasonTypeName }} {{ season.year }}
+      <span class="date-range">{{ season.startDate | date:'MMM d' }} – {{ season.endDate | date:'MMM d, y' }}</span>
+    </mat-checkbox>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-stroked-button class="btn-cancel" (click)="onCancel()">Cancel</button>
+  <button mat-raised-button class="btn-submit" (click)="onSave()" [disabled]="isLoading">Save</button>
+</mat-dialog-actions>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { selectIsAdmin, selectIsTourOperator } from '../../../store/auth/auth.selectors';
@@ -31,8 +31,7 @@ const OPERATOR_NAV: NavItem[] = [
   styleUrls: ['./sidebar.scss'],
   standalone: false
 })
-export class Sidebar {
-
+export class Sidebar implements OnInit {
   isAdmin$!: Observable<boolean>;
   isTourOperator$!: Observable<boolean>;
 
@@ -45,5 +44,5 @@ export class Sidebar {
     this.isAdmin$ = this.store.select(selectIsAdmin);
     this.isTourOperator$ = this.store.select(selectIsTourOperator);
   }
-  
+
 }
