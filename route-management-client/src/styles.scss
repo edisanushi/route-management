@@ -113,6 +113,11 @@ body {
     color: #0a1628 !important;
   }
 
+  .mat-calendar-body-disabled .mat-calendar-body-cell-content {
+    color: rgba(255, 255, 255, 0.2) !important;
+    text-decoration: line-through !important;
+  }
+
   .mat-calendar-body-today:not(.mat-calendar-body-selected) {
     border-color: #f4c542 !important;
   }
@@ -185,4 +190,51 @@ body {
 
 .mat-mdc-checkbox.mat-mdc-checkbox-checked .mdc-checkbox__checkmark {
   color: #0a1628 !important;
+}
+
+.pricing-toolbar {
+  .mdc-text-field--outlined {
+    background: rgba(255, 255, 255, 0.04) !important;
+  }
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+  }
+  .mdc-text-field--outlined:not(.mdc-text-field--disabled):not(.mdc-text-field--focused):hover
+    .mdc-notched-outline__leading,
+  .mdc-text-field--outlined:not(.mdc-text-field--disabled):not(.mdc-text-field--focused):hover
+    .mdc-notched-outline__notch,
+  .mdc-text-field--outlined:not(.mdc-text-field--disabled):not(.mdc-text-field--focused):hover
+    .mdc-notched-outline__trailing {
+    border-color: rgba(255, 255, 255, 0.7) !important;
+  }
+  .mdc-text-field--outlined.mdc-text-field--focused .mdc-notched-outline__leading,
+  .mdc-text-field--outlined.mdc-text-field--focused .mdc-notched-outline__notch,
+  .mdc-text-field--outlined.mdc-text-field--focused .mdc-notched-outline__trailing {
+    border-color: #f4c542 !important;
+    border-width: 2px !important;
+  }
+  .mat-mdc-floating-label {
+    color: rgba(255, 255, 255, 0.5) !important;
+  }
+  .mdc-text-field--outlined.mdc-text-field--focused .mat-mdc-floating-label {
+    color: #f4c542 !important;
+  }
+  .mat-mdc-input-element {
+    color: #ffffff !important;
+    caret-color: #f4c542 !important;
+  }
+  .mat-mdc-select-value,
+  .mat-mdc-select-value-text,
+  .mat-mdc-select-placeholder {
+    color: #ffffff !important;
+  }
+  .mat-mdc-select-arrow {
+    color: rgba(255, 255, 255, 0.45) !important;
+  }
+  .mdc-notched-outline__notch {
+    border-left: none !important;
+    border-right: none !important;
+  }
 }

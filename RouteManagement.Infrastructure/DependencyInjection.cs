@@ -98,6 +98,8 @@ namespace RouteManagement.Infrastructure
             services.AddScoped<ISeasonRepository, SeasonRepository>();
             services.AddScoped<ITourOperatorRepository, TourOperatorRepository>();
             services.AddScoped<ITourOperatorService, TourOperatorService>();
+            services.AddScoped<IPricingRepository, PricingRepository>();
+            services.AddScoped<IPricingService, PricingService>();
             return services;
         }
     }

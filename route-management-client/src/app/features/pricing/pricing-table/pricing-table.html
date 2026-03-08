@@ -1,0 +1,165 @@
+<div class="page-wrapper">
+  <div class="page-header">
+    <button mat-icon-button (click)="onBack()" class="btn-back">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1 class="page-title">{{ pageTitle$ | async }}</h1>
+  </div>
+
+  <ng-container *ngIf="!(isAdmin$ | async)">
+    <div class="bulk-fill-card form-card">
+      <div class="bulk-fill-header">
+        <span class="bulk-fill-title">Bulk Fill</span>
+      </div>
+      <div class="bulk-fill-scope">
+        <button
+          class="scope-btn"
+          [class.active]="bulkScope === 'all'"
+          (click)="bulkScope = 'all'">
+          All days
+        </button>
+        <button
+          class="scope-btn"
+          [class.active]="bulkScope === 'dateRange'"
+          (click)="bulkScope = 'dateRange'">
+          Date range
+        </button>
+        <button
+          class="scope-btn"
+          [class.active]="bulkScope === 'daysOfWeek'"
+          (click)="bulkScope = 'daysOfWeek'">
+          Days of week
+        </button>
+      </div>
+
+      <div class="bulk-fill-scope-inputs" *ngIf="bulkScope === 'dateRange'">
+        <mat-form-field appearance="outline" class="form-field bulk-date">
+          <mat-label>From</mat-label>
+          <input matInput [matDatepicker]="fromPicker"
+            [ngModel]="bulkFromDate"
+            (ngModelChange)="onFromDateChange($event)"
+            [min]="seasonStartDate" [max]="seasonEndDate" />
+          <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+          <mat-datepicker #fromPicker [startAt]="bulkFromDate || seasonStartDate"></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-field bulk-date">
+          <mat-label>To</mat-label>
+          <input matInput [matDatepicker]="toPicker" [(ngModel)]="bulkToDate"
+            [min]="bulkFromDate || seasonStartDate" [max]="seasonEndDate" />
+          <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+          <mat-datepicker #toPicker [startAt]="bulkToDate || bulkFromDate || seasonStartDate"></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <div class="bulk-fill-scope-inputs" *ngIf="bulkScope === 'daysOfWeek'">
+        <div class="day-chips">
+          <button
+            *ngFor="let day of daysOfWeek"
+            class="day-chip"
+            [class.active]="isDaySelected(day)"
+            (click)="toggleDay(day)">
+            {{ day.substring(0, 3) }}
+          </button>
+        </div>
+      </div>
+
+      <div class="bulk-fill-inputs">
+        <mat-form-field appearance="outline" class="form-field bulk-field">
+          <mat-label>Booking Class</mat-label>
+          <mat-select [(ngModel)]="bulkBookingClassId">
+            <mat-option *ngFor="let bc of bookingClassColumns" [value]="bc.id">
+              {{ bc.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-field bulk-field">
+          <mat-label>Price</mat-label>
+          <input matInput type="number" [(ngModel)]="bulkPrice" placeholder="Price" min="0"/>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="form-field bulk-field">
+          <mat-label>Seats</mat-label>
+          <input matInput type="number" [(ngModel)]="bulkSeats" placeholder="Seats" min="1"/>
+        </mat-form-field>
+        <button mat-raised-button class="btn-apply" (click)="onApplyBulkFill()" [disabled]="!canApplyBulkFill">
+          <mat-icon>auto_fix_high</mat-icon>
+          Apply
+        </button>
+      </div>
+    </div>
+  </ng-container>
+
+  <div *ngIf="isLoading$ | async" class="loading-wrapper">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <ng-container *ngIf="!(isLoading$ | async)">
+    <div class="table-container">
+      <div class="table-header" [style.grid-template-columns]="gridTemplate">
+        <div class="col-date">Date</div>
+        <div class="col-day">Day</div>
+        <ng-container *ngFor="let bc of bookingClassColumns">
+          <div class="col-bc-header">{{ bc.name }}</div>
+          <div class="col-bc-header"></div>
+        </ng-container>
+      </div>
+      <div class="table-subheader" [style.grid-template-columns]="gridTemplate">
+        <div class="col-date"></div>
+        <div class="col-day"></div>
+        <ng-container *ngFor="let bc of bookingClassColumns">
+          <div class="col-price-label">Price</div>
+          <div class="col-seats-label">Seats</div>
+        </ng-container>
+      </div>
+
+      <cdk-virtual-scroll-viewport itemSize="44" class="virtual-viewport">
+        <div
+          *cdkVirtualFor="let row of (rows$ | async) || []"
+          class="table-row"
+          [style.grid-template-columns]="gridTemplate"
+          [class.weekend-row]="isWeekend(row)"
+          [class.empty-row]="isEmptyRow(row)">
+          <div class="col-date">{{ row.date | date: 'dd/MM/yyyy' }}</div>
+          <div class="col-day">{{ row.dayOfWeek }}</div>
+          <ng-container *ngFor="let bc of bookingClassColumns">
+            <div class="col-price">
+              <ng-container *ngIf="!(isAdmin$ | async); else readPrice">
+                <input
+                  class="cell-input"
+                  type="number"
+                  min="0"
+                  [value]="getPrice(row, bc.id)"
+                  placeholder="0.00"
+                  (change)="onCellChange(row.date, bc.id, 'price', $any($event.target).value)" />
+              </ng-container>
+              <ng-template #readPrice>
+                <span class="cell-text">{{ getPrice(row, bc.id) !== null ? (getPrice(row, bc.id) | number: '1.2-2') : '—' }}</span>
+              </ng-template>
+            </div>
+            <div class="col-seats">
+              <ng-container *ngIf="!(isAdmin$ | async); else readSeats">
+                <input
+                  class="cell-input"
+                  type="number"
+                  min="0"
+                  [value]="getSeats(row, bc.id)"
+                  placeholder="0"
+                  (change)="onCellChange(row.date, bc.id, 'seatsRequested', $any($event.target).value)" />
+              </ng-container>
+              <ng-template #readSeats>
+                <span class="cell-text">{{ getSeats(row, bc.id) !== null ? getSeats(row, bc.id) : '—' }}</span>
+              </ng-template>
+            </div>
+          </ng-container>
+        </div>
+      </cdk-virtual-scroll-viewport>
+    </div>
+  </ng-container>
+
+  <div class="save-bar" *ngIf="!(isAdmin$ | async)">
+    <button mat-raised-button class="btn-save" (click)="onSave()" [disabled]="saving$ | async">
+      <mat-spinner *ngIf="saving$ | async" diameter="18"></mat-spinner>
+      <mat-icon *ngIf="!(saving$ | async)">save</mat-icon>
+      {{ (saving$ | async) ? 'Saving...' : 'Save Pricing' }}
+    </button>
+  </div>
+</div>

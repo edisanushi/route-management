@@ -1,0 +1,63 @@
+<div class="page-wrapper">
+  <div class="page-header">
+    <h1 class="page-title">Pricing</h1>
+  </div>
+
+  <ng-container *ngIf="isAdmin$ | async">
+    <div class="operator-filter form-card">
+      <mat-form-field appearance="outline" class="form-field operator-select">
+        <mat-label>Tour Operator</mat-label>
+        <mat-select [ngModel]="selectedOperatorId$ | async" (ngModelChange)="onOperatorChange($event)">
+          <mat-option *ngFor="let op of tourOperators$ | async" [value]="op.id">
+            {{ op.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </ng-container>
+
+  <div *ngIf="isLoading$ | async" class="loading-wrapper">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <ng-container *ngIf="!(isLoading$ | async)">
+    <ng-container *ngIf="(isAdmin$ | async) && !(selectedOperatorId$ | async)">
+      <div class="empty-state">
+        <mat-icon class="empty-icon">payments</mat-icon>
+        <p>Select a tour operator to view their pricing.</p>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="!(isAdmin$ | async) || (selectedOperatorId$ | async)">
+      <div *ngIf="(assignedRoutes$ | async)?.length === 0" class="empty-state">
+        <mat-icon class="empty-icon">payments</mat-icon>
+        <p>No assigned routes found.</p>
+      </div>
+
+      <div class="pricing-list-table" *ngIf="(assignedRoutes$ | async)?.length! > 0">
+        <div class="list-header">
+          <span>Season</span>
+          <span>Route</span>
+          <span>Status</span>
+        </div>
+        <div
+          class="list-row"
+          *ngFor="let row of assignedRoutes$ | async"
+          (click)="onRowClick(row)">
+          <span class="cell-season">{{ row.seasonName }}</span>
+          <span class="cell-route">
+            {{ row.origin }}
+            <mat-icon class="route-arrow">arrow_forward</mat-icon>
+            {{ row.destination }}
+          </span>
+          <span class="cell-status">
+            <span class="status-chip" [class.priced]="row.isPriced" [class.not-priced]="!row.isPriced">
+              <mat-icon>{{ row.isPriced ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+              {{ row.isPriced ? 'Priced' : 'Not priced' }}
+            </span>
+          </span>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+</div>

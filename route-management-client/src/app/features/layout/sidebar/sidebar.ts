@@ -14,7 +14,7 @@ const ADMIN_NAV: NavItem[] = [
   { label: 'Routes', icon: 'alt_route', route: '/routes' },
   { label: 'Seasons', icon: 'event', route: '/seasons' },
   { label: 'Tour Operators', icon: 'business', route: '/tour-operators' },
-  { label: 'Booking Classes', icon: 'class', route: '/booking-classes' },
+  { label: 'Pricing', icon: 'payments', route: '/pricing' },
 ];
 
 const OPERATOR_NAV: NavItem[] = [
@@ -23,7 +23,7 @@ const OPERATOR_NAV: NavItem[] = [
   { label: 'Routes', icon: 'alt_route', route: '/routes' },
   { label: 'Seasons', icon: 'event', route: '/seasons' },
   { label: 'Pricing', icon: 'payments', route: '/pricing' },
-]
+];
 
 @Component({
   selector: 'app-sidebar',
@@ -44,5 +44,4 @@ export class Sidebar implements OnInit {
     this.isAdmin$ = this.store.select(selectIsAdmin);
     this.isTourOperator$ = this.store.select(selectIsTourOperator);
   }
-
 }

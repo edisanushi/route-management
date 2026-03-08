@@ -1,0 +1,235 @@
+.page-wrapper {
+  padding: 32px;
+  padding-bottom: 100px;
+}
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.btn-back {
+  color: rgba(255, 255, 255, 0.7);
+  &:hover { color: #ffffff; }
+}
+.page-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+.loading-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 48px 0;
+}
+.bulk-fill-card {
+  margin-bottom: 24px;
+  padding: 20px 24px;
+}
+.bulk-fill-header {
+  margin-bottom: 16px;
+}
+.bulk-fill-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+.bulk-fill-scope {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.scope-btn {
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.9);
+  }
+  &.active {
+    background: rgba(244, 197, 66, 0.15);
+    border-color: #f4c542;
+    color: #f4c542;
+    font-weight: 600;
+  }
+}
+.bulk-fill-scope-inputs {
+  margin-bottom: 16px;
+}
+.day-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.day-chip {
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.9);
+  }
+  &.active {
+    background: rgba(244, 197, 66, 0.15);
+    border-color: #f4c542;
+    color: #f4c542;
+    font-weight: 600;
+  }
+}
+.bulk-fill-inputs {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.bulk-date {
+  width: 180px;
+}
+.bulk-field {
+  width: 160px;
+}
+.btn-apply {
+  background: #f4c542 !important;
+  color: #0a1628 !important;
+  font-weight: 600;
+  margin-top: 4px;
+}
+.table-container {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.table-header,
+.table-subheader {
+  display: grid;
+  background: rgba(255, 255, 255, 0.07);
+  padding: 0 8px;
+}
+.table-header {
+  padding-top: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+.table-subheader {
+  padding-bottom: 10px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+}
+.col-date {
+  padding: 0 8px;
+}
+.col-day {
+  padding: 0 8px;
+}
+.col-bc-header {
+  padding: 0 8px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+}
+.col-price-label,
+.col-seats-label {
+  padding: 0 8px;
+}
+.virtual-viewport {
+  height: 520px;
+}
+.table-row {
+  display: grid;
+  align-items: center;
+  padding: 0 8px;
+  height: 44px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background 0.1s ease;
+  &:hover {
+    background: rgba(255, 255, 255, 0.03);
+  }
+  &.weekend-row {
+    background: rgba(255, 255, 255, 0.025);
+  }
+  &.empty-row {
+    opacity: 0.55;
+  }
+}
+.col-price,
+.col-seats {
+  padding: 0 8px;
+}
+.cell-input {
+  width: 100%;
+  max-width: 90px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  color: #ffffff;
+  padding: 4px 8px;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s ease;
+  &:focus {
+    border-color: #f4c542;
+    background: rgba(244, 197, 66, 0.05);
+  }
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    opacity: 0.4;
+  }
+}
+.cell-text {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 13px;
+  padding: 0 4px;
+}
+.save-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px 32px;
+  background: rgba(10, 22, 40, 0.95);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: flex-end;
+  z-index: 100;
+}
+.btn-save {
+  background: #f4c542 !important;
+  color: #0a1628 !important;
+  font-weight: 600;
+  min-width: 160px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+::ng-deep .table-row > div,
+::ng-deep .col-date,
+::ng-deep .col-day {
+  color: #ffffff !important;
+}
+
+::ng-deep .btn-apply {
+  &:disabled,
+  &[disabled] {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: rgba(255, 255, 255, 0.3) !important;
+    cursor: not-allowed !important;
+  }
+}

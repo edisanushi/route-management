@@ -1,0 +1,118 @@
+.page-wrapper {
+  padding: 32px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+.page-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.page-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+.operator-filter {
+  margin-bottom: 24px;
+  padding: 16px 24px;
+}
+.operator-select {
+  width: 100%;
+  max-width: 360px;
+}
+.loading-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 48px 0;
+}
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 64px 0;
+  color: rgba(255, 255, 255, 0.4);
+  .empty-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 16px;
+  }
+  p {
+    font-size: 16px;
+    margin: 0;
+  }
+}
+.pricing-list-table {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.list-header {
+  display: grid;
+  grid-template-columns: 200px 1fr 140px;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+.list-row {
+  display: grid;
+  grid-template-columns: 200px 1fr 140px;
+  padding: 16px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  transition: background 0.15s ease;
+  align-items: center;
+  &:hover {
+    background: rgba(244, 197, 66, 0.06);
+  }
+}
+.cell-season {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 14px;
+}
+.cell-route {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 500;
+  .route-arrow {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    color: rgba(255, 255, 255, 0.4);
+  }
+}
+.cell-status {
+  display: flex;
+}
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  mat-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+  }
+  &.priced {
+    background: rgba(244, 197, 66, 0.15);
+    color: #f4c542;
+  }
+  &.not-priced {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.45);
+  }
+}

@@ -5,21 +5,6 @@
     <span class="brand-text">RouteManagement</span>
   </div>
 
-  <div class="navbar-links">
-    <a class="nav-link" routerLink="/dashboard" routerLinkActive="nav-link--active">
-      <mat-icon>dashboard</mat-icon>
-      <span>Dashboard</span>
-    </a>
-    
-    <a class="nav-link"
-      *ngIf="isAdmin$ | async"
-      routerLink="/auth/register"
-      routerLinkActive="nav-link--active">
-      <mat-icon>person_add</mat-icon>
-      <span>Register Operator</span>
-    </a>
-  </div>
-
   <div class="navbar-actions">
     <div class="user-info">
       <mat-icon class="user-icon">account_circle</mat-icon>

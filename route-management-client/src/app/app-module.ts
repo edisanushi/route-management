@@ -12,6 +12,8 @@ import { authReducer } from './store/auth/auth.reducer';
 import { AuthEffects } from './store/auth/auth.effects';
 import { tourOperatorsReducer } from './features/tour-operators/store/tour-operators.reducer';
 import { TourOperatorsEffects } from './features/tour-operators/store/tour-operators.effects';
+import { pricingReducer } from './features/pricing/store/pricing.reducer';
+import { PricingEffects } from './features/pricing/store/pricing.effects';
 import { environment } from '../environments/environment';
 
 @NgModule({
@@ -27,8 +29,10 @@ import { environment } from '../environments/environment';
       auth: authReducer
     }),
     StoreModule.forFeature('tourOperators', tourOperatorsReducer),
+    StoreModule.forFeature('pricing', pricingReducer),
     EffectsModule.forRoot([AuthEffects]),
     EffectsModule.forFeature([TourOperatorsEffects]),
+    EffectsModule.forFeature([PricingEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production

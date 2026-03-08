@@ -46,6 +46,12 @@ const routes: Routes = [
             .then(m => m.TourOperatorsModule)
       },
       {
+        path: 'pricing',
+        loadChildren: () =>
+          import('./features/pricing/pricing-module')
+            .then(m => m.PricingModule)
+      },
+      {
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full'
