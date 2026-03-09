@@ -80,6 +80,20 @@ namespace RouteManagement.Infrastructure
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecretKey)),
                     ClockSkew = TimeSpan.Zero
                 };
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+                        var path = context.HttpContext.Request.Path;
+                        if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs"))
+                        {
+                            context.Token = accessToken;
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
             });
 
             return services;
@@ -100,6 +114,8 @@ namespace RouteManagement.Infrastructure
             services.AddScoped<ITourOperatorService, TourOperatorService>();
             services.AddScoped<IPricingRepository, PricingRepository>();
             services.AddScoped<IPricingService, PricingService>();
+            services.AddScoped<IExcelExportService, ExcelExportService>();
+
             return services;
         }
     }

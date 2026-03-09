@@ -233,3 +233,13 @@
     cursor: not-allowed !important;
   }
 }
+
+.btn-export {
+  margin-left: auto;
+  border-color: rgba(255,255,255,0.3) !important;
+  color: rgba(255,255,255,0.8) !important;
+  &:hover {
+    border-color: #f4c542 !important;
+    color: #f4c542 !important;
+  }
+}

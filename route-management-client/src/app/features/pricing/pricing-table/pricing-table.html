@@ -1,9 +1,13 @@
 <div class="page-wrapper">
   <div class="page-header">
     <button mat-icon-button (click)="onBack()" class="btn-back">
-      <mat-icon>arrow_back</mat-icon>
+        <mat-icon>arrow_back</mat-icon>
     </button>
     <h1 class="page-title">{{ pageTitle$ | async }}</h1>
+    <button mat-stroked-button class="btn-export" (click)="onExport()" *ngIf="!(isLoading$ | async)">
+        <mat-icon>download</mat-icon>
+        Export Excel
+    </button>
   </div>
 
   <ng-container *ngIf="!(isAdmin$ | async)">

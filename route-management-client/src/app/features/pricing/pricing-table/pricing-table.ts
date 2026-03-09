@@ -6,8 +6,11 @@ import { Observable, Subject, takeUntil, filter, take } from 'rxjs';
 import { PricingRowDto, BulkFillScope } from '../models/pricing.models';
 import { PricingActions } from '../store/pricing.actions';
 import { selectPricingRows, selectTableLoading, selectSaving, selectPricingTitle } from '../store/pricing.selectors';
-import { selectIsAdmin } from '../../../store/auth/auth.selectors';
+import { selectIsAdmin, selectToken } from '../../../store/auth/auth.selectors';
 import { NotificationService } from '../../../core/services/notification.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ExportDialog } from '../export-dialog/export-dialog';
+import { ExportService } from '../services/export.service';
 
 const DAYS_OF_WEEK = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
@@ -38,6 +41,8 @@ export class PricingTable implements OnInit, OnDestroy {
   seasonStartDate: Date | null = null;
   seasonEndDate: Date | null = null;
 
+  private token: string | null = null;
+
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -45,7 +50,9 @@ export class PricingTable implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private fb: FormBuilder,
-    private notification: NotificationService
+    private notification: NotificationService,
+    private dialog: MatDialog,
+    private exportService: ExportService
   ) {}
 
   ngOnInit(): void {
@@ -55,6 +62,8 @@ export class PricingTable implements OnInit, OnDestroy {
     this.isLoading$ = this.store.select(selectTableLoading);
     this.saving$ = this.store.select(selectSaving);
     this.isAdmin$ = this.store.select(selectIsAdmin);
+
+    this.store.select(selectToken).pipe(take(1), takeUntil(this.destroy$)).subscribe(t => this.token = t);
 
     this.rows$.pipe(
       filter(rows => rows.length > 0),
@@ -162,6 +171,17 @@ export class PricingTable implements OnInit, OnDestroy {
     if (this.bulkToDate && date && this.bulkToDate < date) {
       this.bulkToDate = null;
     }
+  }
+
+  async onExport(): Promise<void> {
+    if (!this.token) return;
+    const dialogRef = this.dialog.open(ExportDialog, {
+      width: '420px',
+      disableClose: true,
+      panelClass: 'dark-dialog'
+    });
+    await this.exportService.exportPricing(this.operatorSeasonRouteId, this.token);
+    dialogRef.afterClosed().subscribe();
   }
 
 }

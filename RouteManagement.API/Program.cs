@@ -1,5 +1,7 @@
 using Microsoft.OpenApi;
+using RouteManagement.API.Hubs;
 using RouteManagement.API.Middleware;
+using RouteManagement.Application.Interfaces;
 using RouteManagement.Infrastructure;
 using RouteManagement.Infrastructure.Data;
 using Serilog;
@@ -44,7 +46,6 @@ builder.Services.AddSwaggerGen(options =>
     {
         [new OpenApiSecuritySchemeReference("bearer", document)] = []
     });
-
 });
 
 builder.Services.AddCors(options =>
@@ -53,10 +54,13 @@ builder.Services.AddCors(options =>
     {
         policy.WithOrigins("http://localhost:4200")
               .AllowAnyHeader()
-              .AllowAnyMethod();
+              .AllowAnyMethod()
+              .AllowCredentials();
     });
 });
 
+builder.Services.AddSignalR();
+builder.Services.AddScoped<IExportProgressService, ExportProgressService>();
 builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
@@ -83,5 +87,6 @@ app.UseCors("AllowAngular");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.MapHub<ExportHub>("/hubs/export");
 
 app.Run();
