@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://api/api',
-  hubUrl: 'https://api',
-  hubWsUrl: 'wss://api'
+  apiUrl: '/api',
+  hubUrl: '',
+  hubWsUrl: 'ws://localhost:4200'
 };

@@ -1,6 +1,8 @@
 <Solution>
   <Folder Name="/Solution Items/">
     <File Path=".gitignore" />
+    <File Path="docker-compose.yml" />
+    <File Path="README.md" />
   </Folder>
   <Project Path="RouteManagement.API/RouteManagement.API.csproj" />
   <Project Path="RouteManagement.Application/RouteManagement.Application.csproj" Id="f4939643-dddf-4b19-8569-f00d28c626a4" />
